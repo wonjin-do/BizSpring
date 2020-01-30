@@ -19,8 +19,9 @@ Spring Framework를 사용해서 ‘웹 프로젝트’를 어떻게 진행하�
 
 ## Part 1 스프링 개발 환경 구축
 
-### 1장 개발을 위한 준비
-#### 1.1 개발환경 설정
+# 1장 개발을 위한 준비
+
+## 1.1 개발환경 설정
 
 - Spring 버전에 따른 JDK 버전 호환성 체크
 
@@ -36,7 +37,7 @@ Spring Framework를 사용해서 ‘웹 프로젝트’를 어떻게 진행하�
   
 -  sts.ini( 혹은 eclipse.ini ) 파일편집 
 
-   맨 아래에 다음 설정글 작성 
+   맨 위에 다음 설정글 작성 
 
    - Lombok라이브러리 오작동 예방
 
@@ -47,7 +48,7 @@ Spring Framework를 사용해서 ‘웹 프로젝트’를 어떻게 진행하�
 
    
 
-#### 1.2 스프링 프로젝트 생성 (스프링 ver. 5)
+## 1.2 스프링 프로젝트 생성 (스프링 ver. 5)
 
 - C:\Users\사용자명\.m2\repository 에 라이브러리 설치됨
 
@@ -93,7 +94,7 @@ Spring Framework를 사용해서 ‘웹 프로젝트’를 어떻게 진행하�
     
     
 
-#### 1.3 Tomcat을 이용한 프로젝트 실행 확인
+## 1.3 Tomcat을 이용한 프로젝트 실행 확인
 
 - 프로젝트 실행시 발생하는 문제점 해결방법
   - .m2 폴더안 파일 모두 지우고 다시 이클립스 실행
@@ -101,7 +102,7 @@ Spring Framework를 사용해서 ‘웹 프로젝트’를 어떻게 진행하�
     - 프로젝트>마우스우클릭>Maven>Update Project
     - Force Update of Snapshots/Releases 체크
 
-#### 1.4 Lombok 라이브러리 설치
+## 1.4 Lombok 라이브러리 설치
 
 - 필요성 : 코드를 자동으로 작성해주는 기능 제공
 - https://projectlombok.org 에서 다운로드
@@ -134,8 +135,7 @@ Spring Framework를 사용해서 ‘웹 프로젝트’를 어떻게 진행하�
 
 - 
 
-
-#### 1.5 Java Configuration을 하는 경우
+## 1.5 Java Configuration을 하는 경우
 
 - 필요성 : xml설정이 싫다,  Java설정이 좋다.
 
@@ -203,19 +203,17 @@ Spring Framework를 사용해서 ‘웹 프로젝트’를 어떻게 진행하�
   
 - 
 
-### 2장 스프링의 특징과 의존성 주입
-#### 2.1 스프링 프레임워크의 간략한 역사
+# 2장 스프링의 특징과 의존성 주입
+
+## 2.1 스프링 프레임워크의 간략한 역사
 
 	1. Enterprise Java Bean (EJB) 프레임워크에 반해 경령이며 빠르다
- 	2. OOP구조를 뒷받침, 의존성 주입
- 	3. 다른 프레임워크를 포용
- 	4. 개발 생상성 증대와 개발도구 지원<hr>
+	2. OOP구조를 뒷받침, 의존성 주입
+	3. 다른 프레임워크를 포용
+	4. 개발 생상성 증대와 개발도구 지원<hr>
+## 2.2 의존성 주입 테스트
 
-
-
-#### 2.2 의존성 주입 테스트
-
-#### 2.3 스프링이 동작하면서 생기는 일
+## 2.3 스프링이 동작하면서 생기는 일
 
 - 스프링 xml파일의 namespace 
   
@@ -287,7 +285,7 @@ Spring Framework를 사용해서 ‘웹 프로젝트’를 어떻게 진행하�
   
     ​			
 
-#### 2.4 스프링 **4.3 이후** 
+## 2.4 스프링 **4.3 이후** 
 
 - 도서 SPRING QUICK START는 4.2 버전의 스프링을 사용함.
 
@@ -325,15 +323,17 @@ Spring Framework를 사용해서 ‘웹 프로젝트’를 어떻게 진행하�
 
   - 
 
-3장 스프링과 MySQL Database 연동
-3.1 MySQL 설치
+# 3장 스프링과 MySQL Database 연동
+
+## 3.1 MySQL 설치
 
 **스키마 (데이터베이스) 'bizspring' 추가**
 
 포트 3306
 
-3.2 MySQL WorkBench 설치
-3.3 프로젝트의 JDBC 연결
+## 3.2 MySQL WorkBench 설치
+
+## 3.3 프로젝트의 JDBC 연결
 
 굳이 jdbc.jar 파일을 다운받는 수고를 하지 말고 Maven의 도움을 받자
 
@@ -384,7 +384,7 @@ public class JDBCTests {
 
 
 
-3.4 커넥션 풀 설정
+## 3.4 커넥션 풀 설정
 
 - **필요한 의존성 3가지 ( 라이브러리 )**
 
@@ -566,9 +566,9 @@ public class DBCPTests {
   
   - https://github.com/wonjin-do/Java-Handling-Web#DataBase
 
-4장 MyBatis와 스프링 연동
+# 4장 MyBatis와 스프링 연동
 
-4.1 MyBatis
+## 4.1 MyBatis
 
 - 개선점
   - Connection 직접 생성, 직접 close  -->  Connection 자동 close
@@ -625,7 +625,7 @@ public class DBCPTests {
 
 
 
-4.2 스프링과의 연동 처리
+## 4.2 스프링과의 연동 처리
 
  - Mapper인터페이스
 
@@ -748,9 +748,9 @@ public class DBCPTests {
 
 
 
-4.3 log4jdbc-log4j2 설정
+## 4.3 log4jdbc-log4j2 설정
 
-# ??? properties로 뭘하는거지? driverClassName을 지정하는 거 같은데
+properties로 뭘하는거지? driverClassName을 지정하는 거 같은데
 
 - SQL로그 확인하는 좋은 방법
 
@@ -800,10 +800,11 @@ public class DBCPTests {
 
   
 
-**Part 2 스프링 MVC 설정**
+# Part 2 스프링 MVC 설정
 
-5장 스프링 MVC의 기본 구조
-5.1 스프링 MVC 프로젝트의 내부 구조
+# 5장 스프링 MVC의 기본 구조
+
+## 5.1 스프링 MVC 프로젝트의 내부 구조
 
 패키지 경로 org.zerock.controller
 
@@ -961,7 +962,7 @@ public class RootConfig {
 
 
 
-5.2 예제 프로젝트의 로딩 구조
+## 5.2 예제 프로젝트의 로딩 구조
 
 1. 서블릿컨테이너(Tomcat)은 `web.xml`을 로딩하여 구동된다.
 2. ContextLoaderListener를 통해 `root-context`를 로딩하여 `스프링컨테이너ROOT`를 구동
@@ -969,16 +970,17 @@ public class RootConfig {
 4. 요청을 받은 그제서야 서블릿컨테이너안에 DispatcherServlet객체 생성, 
 5. DispatcherServlet생성 직후, init( )실행으로 `servlet-context.xml`을 로딩하여 `스프링컨테이너`구동
 
-5.3 스프링 MVC의 기본 사상
+## 5.3 스프링 MVC의 기본 사상
 
 ​	Servlet/JSP의 HttpServletRequest / HttpServeltResponse 타입의 객체를 다루는 일은 매우 번거롭다.
 
 ​	SpringMVC구조를 통해 이 두 객체를 직접 다룰 일이 없어져 개발이 편해졌다.
 
-5.4 모델2와 스프링 MVC
+## 5.4 모델2와 스프링 MVC
 
-6장 스프링 MVC의 Controller
-6.1 @Controller, @RequestMapping
+# 6장 스프링 MVC의 Controller
+
+## 6.1 @Controller, @RequestMapping
 
 - **@Controller** 
   - servlet-contex.xml 에서 scan대상이 되면 @Contrllor가 있는 클래스에 대해 Spring컨테이너가 Bean객체로 생성해둠.
@@ -989,12 +991,12 @@ public class RootConfig {
   - @Log 는 `java.util.Logging`을 이용
   - @Log4j 는 `Log4j 라이브러리`를 이용함.
 
-6.2 @RequestMapping의 변화
+## 6.2 @RequestMapping의 변화
 
 - 스프링 4.3버전부터 @ReuquestMapping(value=" ", method={ }) 방식을 지양
 - @GetMapping / @PostMapping 추가
 
-6.3 Controller의 파라미터 수집
+## 6.3 Controller의 파라미터 수집
 
 - HttpServletRequest의 필드를 분석하여 VO객체의 같은 이름을 가진  필드에  값을 대입하여 VO객체를 생성한다. 이후, Controoler 메소드에 파라미터로 넣어줌.
 - getter / setter는 필수(@Data로 대체가능)
@@ -1029,7 +1031,7 @@ public class RootConfig {
 
    
 
-6.4 Model이라는 데이터 전달자
+## 6.4 Model이라는 데이터 전달자
 
 JavaBeans규칙
 
@@ -1042,7 +1044,7 @@ JavaBeans규칙
 - RedirectAttributes
   - 화면에 한 번만 사용하고 다음에는 사용되지 않는 데이터를 전달하기 위해서 사용합니다.
 
-6.5 Controller의 리턴 타입
+## 6.5 Controller의 리턴 타입
 
 1. void 타입
 
@@ -1123,7 +1125,7 @@ JavaBeans규칙
 
   
 
-6.6 Controller의 Exception 처리
+## 6.6 Controller의 Exception 처리
 
 - ControllerAdivce
 
@@ -1147,31 +1149,27 @@ JavaBeans규칙
 
 **Part 3 기본적인 웹 게시물 관리**
 
-7장 스프링 MVC 프로젝트의 기본 구성
-7.1 각 영역의 Naming Convention(명명규칙)
-7.2 프로젝트를 위한 요구 사항
-7.3 예제 프로젝트 구성
-7.4 데이터베이스 관련 설정 및 테스트
+# 7장 스프링 MVC 프로젝트의 기본 구성
 
-# ???
+## 7.1 각 영역의 Naming Convention(명명규칙)
 
-p.177 상단 properties파일 	
+## 7.2 프로젝트를 위한 요구 사항
 
-7.5 Java 설정을 이용하는 경우의 프로젝트 구성
+## 7.3 예제 프로젝트 구성
 
-# ???	
+## 7.4 데이터베이스 관련 설정 및 테스트
 
-p.181
+??   p.177 상단 properties파일 	
 
-8장 영속/비즈니스 계층의 CRUD 구현
+??	p.181
+
+# 8장 영속/비즈니스 계층의 CRUD 구현
 
 ​	DTO와 VO간의 차이를 모르겠다....
 
 ​	https://gmlwjd9405.github.io/2018/12/25/difference-dao-dto-entity.html
 
-
-
-8.1 영속 계층의 구현 준비
+## 8.1 영속 계층의 구현 준비
 
 두 가지 방법중 하나를 선택
 
@@ -1180,26 +1178,32 @@ Mapper Interface
 - @SELECT( ) 등 어노테이션
 - Mapper XML 파일
 
-8.2 영속 영역의 CRUD 구현
+## 8.2 영속 영역의 CRUD 구현
 
-9장 비즈니스 계층
-9.1 비지니스 계층의 설정
-9.2 비즈니스 계층의 구현과 테스트
+# 9장 비즈니스 계층
 
-# ??? p.204 상단, (p.201 하단에 따르면) 멤버필드가 하나면 Autowired 없어도 될텐데 오류뜨네.....;;;
+## 9.1 비지니스 계층의 설정
 
-10장 프레젠테이션(웹) 계층의 CRUD 구현
-10.1 Controller의 작성
-10.2 BoardController의 작성
+## 9.2 비즈니스 계층의 구현과 테스트
 
-11장 화면 처리
-11.1 목록 페이지 작업과 includes
-11.2 목록 화면 처리
-11.3 등록 입력 페이지와 등록 처리
+??? p.204 상단, (p.201 하단에 따르면) 멤버필드가 하나면 Autowired 없어도 될텐데 오류뜨네.....;;;
+
+# 10장 프레젠테이션(웹) 계층의 CRUD 구현
+
+## 10.1 Controller의 작성
+
+## 10.2 BoardController의 작성
+
+# 11장 화면 처리
+
+## 11.1 목록 페이지 작업과 includes
+
+## 11.2 목록 화면 처리
+## 11.3 등록 입력 페이지와 등록 처리
 
 ​	p.245 redirect
 
-11.4 조회 페이지와 이동
+## 11.4 조회 페이지와 이동
 
 ​	p.257 뒤로가기 방지방법
 
@@ -1207,26 +1211,26 @@ Mapper Interface
 
  - ~~~javascript
    						function checkModal(result) {
-   
-   							if (result === '' || history.state) {
-   								return;
-   							}
-   							//새글 등록되고 수행할 작업
-   							if (parseInt(result) > 0) {
-   								$(".modal-body").html(
-   										"게시글 " + parseInt(result)
-   												+ " 번이 등록되었습니다.");
-   							}
-   
-   							$("#myModal").modal("show");
-   						}
+      
+      							if (result === '' || history.state) {
+      								return;
+      							}
+      							//새글 등록되고 수행할 작업
+      							if (parseInt(result) > 0) {
+      								$(".modal-body").html(
+      										"게시글 " + parseInt(result)
+      												+ " 번이 등록되었습니다.");
+      							}
+      
+      							$("#myModal").modal("show");
+      						}
    ~~~
 
  - 새 게시글 번호를 받아왔거나,  history.state가 null이면 위 주석아래 부분을 실행
 
 	- 새 게시글 번호가 없고, history.state가 not null이면 위 주석 아래부분 무시
 
-11.5 게시물의 수정/삭제 처리
+## 11.5 게시물의 수정/삭제 처리
 
 p.262 자바스크립트 처리
 
@@ -1235,118 +1239,835 @@ p.262 자바스크립트 처리
 - p.266  formObj.empty() 는 왜하는 거지?
 
 # 12장 오라클 데이터베이스 페이징 처리
-12.1 order by의 문제
+## 12.1 order by의 문제
 
 - 시스템에 부하를 주지 않기 위해 가능하면 정렬을 하지 말아야함
 
-12.2 order by 보다는 인덱스
-12.3 인덱스를 이용하는 정렬
-12.4 ROWNUM과 인라인뷰
+## 12.2 order by 보다는 인덱스
 
-13장 MyBatis와 스프링에서 페이징 처리
-13.1 MyBatis 처리와 테스트
-13.2 BoardController와 BoardService 수정
+## 12.3 인덱스를 이용하는 정렬
+
+## 12.4 ROWNUM과 인라인뷰
+
+# 13장 MyBatis와 스프링에서 페이징 처리
+
+## 13.1 MyBatis 처리와 테스트
+## 13.2 BoardController와 BoardService 수정
 
 # 14장 페이징 화면 처리
-14.1 페이징 처리할 때 필요한 정보들
-14.2 페이징 처리를 위한 클래스 설계
-14.3 JSP에서 페이지 번호 출력
-14.4 조회 페이지로 이동
-14.5 수정과 삭제 처리
-14.6 MyBatis에서 전체 데이터의 개수 처리
+## 14.1 페이징 처리할 때 필요한 정보들
+
+## 14.2 페이징 처리를 위한 클래스 설계
+
+## 14.3 JSP에서 페이지 번호 출력
+
+## 14.4 조회 페이지로 이동
+
+## 14.5 수정과 삭제 처리
+
+## 14.6 MyBatis에서 전체 데이터의 개수 처리
+
+
 
 #  15장 검색 처리
-15.1 검색 기능과 SQL
-15.2 MyBatis의 동적 SQL
-15.3 검색 조건 처리를 위한 Criteria의 변화
-15.4 화면에서 검색 조건 처리
+## 15.1 검색 기능과 SQL
+
+## 15.2 MyBatis의 동적 SQL
+
+## 15.3 검색 조건 처리를 위한 Criteria의 변화
+
+## 15.4 화면에서 검색 조건 처리
 
 **Part 4 REST 방식과 Ajax를 이용하는 댓글 처리**
 
 # 16장 REST 방식으로 전환
 
-16.1 @RestController
-16.2 @RestController의 반환 타입
+## 16.1 @RestController
+
+## 16.2 @RestController의 반환 타입
 
 **p.362 아래.... 안정하면  xml로 표시가 안되는데?** 
 
+## 16.3 @RestController에서 파라미터
 
+## 16.4 REST 전송 방식
 
-16.3 @RestController에서 파라미터
-16.4 REST 전송 방식
-16.5 다양한 전송 방식
+## 16.5 다양한 전송 방식
 
 # 17장 Ajax 댓글 처리
-17.1 프로젝트의 구성
-17.2 댓글 처리를 위한 영속 영역
+## 17.1 프로젝트의 구성
+
+## 17.2 댓글 처리를 위한 영속 영역
 
 **@Param(p.387)**
 
+## 17.3 서비스 영역과 Controller 처리
+
+REST방식으로 동작하는 URL을 설계할 때는 PK를 기준으로 작성하는 것이 좋습니다.
+
+(p.397 하단)  @RequestBody를 하는 이유 : String이 전송될 때는 어노테이션없이도 메소드의 파라미터로 오는 vo 객체의 필드에 자동 바인딩이 되나, Json String이 전송될 때는 @RequestBody어노테이션을 꼭 붙여야한다.
+
+## 17.4 JavaScript 준비
+
+## 17.5 이벤트 처리와 HTML 처리
+
+## 17.6 댓글의 페이징 처리
+
+## 17.7 댓글 페이지의 화면 처리
 
 
-17.3 서비스 영역과 Controller 처리
-17.4 JavaScript 준비
-17.5 이벤트 처리와 HTML 처리
-17.6 댓글의 페이징 처리
-17.7 댓글 페이지의 화면 처리
 
-**Part 5 AOP와 트랜잭션**
+# Part 5 AOP와 트랜잭션
 
 # 18장 AOP라는 패러다임
-18.1 AOP 용어들
-18.2 AOP 실습
-18.3 AOP 설정
-18.4 AOP 테스트
-18.5 @Around와 ProceedingJoinPoint
+## 18.1 AOP 용어들
+
+## 18.2 AOP 실습
+
+## 18.3 AOP 설정
+
+## 18.4 AOP 테스트
+
+## 18.5 @Around와 ProceedingJoinPoint
 
 # 19장 스프링에서 트랜잭션 관리
-19.1 데이터베이스 설계와 트랜잭션
-19.2 트랜잭션 설정 실습
+## 19.1 데이터베이스 설계와 트랜잭션
+
+## 19.2 트랜잭션 설정 실습
 
 # 20장 댓글과 댓글 수에 대한 처리
-20.1 프로젝트수정
+## 20.1 프로젝트수정
 
-**Part 6 파일 업로드 처리**
+# Part 6 파일 업로드 처리
 
 # 21장 파일 업로드 방식
-21.1 스프링의 첨부파일을 위한 설정
-21.2](javascript:fn_hide_introduce_TOC('TOC'))
 
-[방식의 파일 업로드
-21.3 Ajax를 이용하는 파일 업로드
+## 21.1 스프링의 첨부파일을 위한 설정
+
+web.xml 변경(첨부파일 처리에 대한 톰캣WAS자체 설정)
+
+~~~xml
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	id="WebApp_ID" version="3.1">
+~~~
+
+<multipart-config> 추가
+
+~~~xml
+<servlet>
+		<servlet-name>appServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+
+		<multipart-config>
+			<location>C:\\upload\\temp</location> //업로드 경로
+			<max-file-size>20971520</max-file-size> <!--1MB * 20 -->
+			<max-request-size>41943040</max-request-size><!-- 40MB -->
+			<file-size-threshold>20971520</file-size-threshold> <!-- 20MB -->
+		</multipart-config>
+    
+
+	</servlet>
+~~~
+
+- 특정 사이즈의 메모리 사용(file-size-threshold)
+- 업로드되는 파일을 저장할 공간(location)
+- 업로드 되는 파일의 최대크기(max-file-size)
+- 한번에 올릴 수 있는 최대 크기(max-request-size)
+
+
+
+servlet-context.xml에 multipartResolver Bean 등록
+
+~~~xml
+	<context:component-scan
+		base-package="org.zerock.controller" />
+		
+	<beans:bean id="multipartResolver"
+		class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
+
+	</beans:bean>
+~~~
+
+## 21.2<Form> 방식의 파일업로드
+
+multiple을 명시한다(input태그에)
+
+~~~html
+<form action="uploadFormAction" method="post" enctype="multipart/form-data">
+
+<input type='file' name='uploadFile' multiple>
+
+<button>Submit</button>
+
+</form>
+~~~
+
+
+
+~~~java
+	@PostMapping("/uploadFormAction")
+	public void uploadFormPost(MultipartFile[] uploadFile, Model model) {
+
+		String uploadFolder = "C:\\upload";
+
+		for (MultipartFile multipartFile : uploadFile) {
+
+			log.info("-------------------------------------");
+			log.info("Upload File Name: " + multipartFile.getOriginalFilename());
+			log.info("Upload File Size: " + multipartFile.getSize());
+			uploadFileName = multipartFile.getOriginalFilename();//IE읽 경우 전체경로를 리턴해옴.
+            // IE 일 경우 subString작업을 추가로 요함
+		   // uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\") + 1);
+            
+			File saveFile = new File(uploadFolder, uploadFileName);
+            
+			try {
+				multipartFile.transferTo(saveFile);//업로드 진행
+			} catch (Exception e) {
+				log.error(e.getMessage());
+			} // end catch
+		} // end for
+	}
+
+
+
+~~~
+
+
+
+## 21.3 Ajax를 이용하는 파일 업로드
+
+Q. p.502 상단 inputFIle[0] 에서 idx 0의 의미는??
+
+`브라우저`에서Ajax로 FormData를 전송
+
+~~~html
+	<div class='uploadDiv'>
+		<input type='file' name='uploadFile' multiple>
+	</div>
+
+	<div class='uploadResult'>
+		<ul>
+
+		</ul>
+	</div>
+
+
+	<button id='uploadBtn'>Upload</button>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+		crossorigin="anonymous"></script>
+
+	<script>
+        $(document).ready(function(){
+             var regex = new RegExp("(.*?)\.(exe|sh|zip|alz)$");
+			var maxSize = 5242880; //5MB
+            //boolean을 리턴하는 사전처리함수 (파일사이즈, 확장자검사해줌)
+            function checkExtension(fileName, fileSize) {
+                if (fileSize >= maxSize) {
+                    alert("파일 사이즈 초과");
+                    return false;
+                }
+                if (regex.test(fileName)) {
+                    alert("해당 종류의 파일은 업로드할 수 없습니다.");
+                    return false;
+                }
+                return true;
+            }
+             $("#uploadBtn").on("click", function(e){
+                     var formData = new FormData();
+                     var inputFile = $("input[name='uploadFile']");
+                     var files = inputFile[0].files;
+                     console.log(files);
+
+                 	//add filedata to formdata
+                     for(var i = 0; i < files.length; i++){
+                         //사전검사
+                         if (!checkExtension(files[i].name, files[i].size)) {
+							return false;
+						}
+                         //검사통과하면 formData갖추기
+                      	 formData.append("uploadFile", files[i]);
+                     }
+                 
+                     $.ajax({
+                 //받아올 데이터는 아직없음(dataType이 공란), 추후 섬네일생성후 섬네일정보를 받아올예정
+                         url: '/uploadAjaxAction',
+                         processData: false,
+                         contentType: false,
+                         data: formData,
+                         type: 'POST', 
+                         success: function(result){
+                         alert("Uploaded");
+                         }
+                     }); //$.ajax
+             });  
+        });  
+	</script>	
+~~~
+
+서버에서 처리
+
+~~~java
+<Form>방식과 거의일
+@PostMapping("/uploadFormAction")
+	public void uploadFormPost(MultipartFile[] uploadFile, Model model) {
+		String uploadFolder = "C:\\upload";
+		for (MultipartFile multipartFile : uploadFile) {
+			log.info("-------------------------------------");
+			log.info("Upload File Name: " + multipartFile.getOriginalFilename());
+			log.info("Upload File Size: " + multipartFile.getSize());
+            String uploadFileName = multipartFile.getOriginalFilename();//IE읽 경우 전체경로를 리턴해옴.            // IE 일 경우 subString작업을 추가로 요함
+		   // uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\") + 1);
+			File saveFile = new File(uploadFolder, uploadFileName);
+			try {
+				multipartFile.transferTo(saveFile);//업로드 진행
+			} catch (Exception e) {
+				log.error(e.getMessage());
+			} // end catch
+		} // end for
+	}
+~~~
+
+
 
 # 22장 파일 업로드 상세 처리
-22.1 파일의 확장자나 크기의 사전 처리
-22.2 섬네일 이미지 생성
-22.3 업로드된 파일의 데이터 반환
+
+## 22.1 파일의 확장자나 크기의 사전 처리
+
+### 방법1 : 날짜폴더
+
+날짜로 폴더를 추가 생성하기 때문에, uploadFolder에서 uploadPath로 날짜폴더가 함께 있는 경로로 업로드경로설정
+
+~~~java
+<Form>방식과 거의일
+@PostMapping("/uploadFormAction")
+	public void uploadFormPost(MultipartFile[] uploadFile, Model model) {
+		
+    	String uploadFolder = "C:\\upload";
+	    
+    	// // make folder --------
+		File uploadPath = new File(uploadFolder, getFolder());//uploadPath
+		 log.info("upload path: " + uploadPath);
+	
+		 if (uploadPath.exists() == false) {
+             // make "yyyy/MM/dd" folder
+			 uploadPath.mkdirs();
+         }
+		    
+		for (MultipartFile multipartFile : uploadFile) {
+			log.info("-------------------------------------");
+			log.info("Upload File Name: " + multipartFile.getOriginalFilename());
+			log.info("Upload File Size: " + multipartFile.getSize());
+            String uploadFileName = multipartFile.getOriginalFilename();//IE읽 경우 전체경로를 리턴해옴.
+            // IE 일 경우 subString작업을 추가로 요함
+		   // uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\") + 1);
+            //교체 File saveFile = new File(uploadFolder, uploadFileName);
+             File saveFile = new File(uploadPath, uploadFileName);
+			try {
+				multipartFile.transferTo(saveFile);//업로드 진행
+			} catch (Exception e) {
+				log.error(e.getMessage());
+			} // end catch
+		} // end for
+	}
+
+	private String getFolder() {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = new Date();
+		String str = sdf.format(date);
+		return str.replace("-", File.separator);//  yyyy/MM/dd로 변환해줌
+	}
+~~~
+
+
+
+### 방법2 : 날짜폴더 + UUID
+
+~~~java
+//UUID 코드 추가
+            UUID uuid = UUID.randomUUID();
+		   uploadFileName = uuid.toString() + "_" + uploadFileName;
+~~~
+
+~~~java
+	@PostMapping("/uploadAjaxAction")
+	public void uploadAjaxPost(MultipartFile[] uploadFile) {
+		String uploadFolder = "C:\\upload";
+		// make folder --------
+		File uploadPath = new File(uploadFolder, getFolder());
+		log.info("upload path: " + uploadPath);
+		if (uploadPath.exists() == false) {
+			uploadPath.mkdirs();
+		}
+		// make yyyy/MM/dd folder
+		for (MultipartFile multipartFile : uploadFile) {
+			log.info("-------------------------------------");
+			log.info("Upload File Name: " + multipartFile.getOriginalFilename());
+			log.info("Upload File Size: " + multipartFile.getSize());
+			String uploadFileName = multipartFile.getOriginalFilename();
+			// IE has file path
+			uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\") + 1);
+			log.info("only file name: " + uploadFileName);
+		  
+            //UUID 코드 추가
+            UUID uuid = UUID.randomUUID();
+		   uploadFileName = uuid.toString() + "_" + uploadFileName;
+			
+            File saveFile = new File(uploadPath, uploadFileName);
+            try {
+				multipartFile.transferTo(saveFile);
+			} catch (Exception e) {
+				log.error(e.getMessage());
+			} // end catch
+
+		} // end for
+
+	}
+~~~
+
+## 
+
+## 22.2 '섬네일 이미지 생성' 및 '업로드된 파일의 데이터 반환'
+
+UUID적용된 원본을 이용
+
+~~~xml
+<!-- https://mvnrepository.com/artifact/net.coobird/thumbnailator -->
+<dependency>
+    <groupId>net.coobird</groupId>
+    <artifactId>thumbnailator</artifactId>
+    <version>0.4.8</version>
+</dependency>
+
+~~~
+
+### 클라이언트단
+
+~~~javascript
+$.ajax({
+			 url: '/uploadAjaxAction',
+			 processData: false, 
+			 contentType: false,
+			 data: formData,
+			 type: 'POST',
+			 success: function(result){
+			 alert("Uploaded");	
+			 }
+});
+~~~
+
+### 서버단 코드
+
+아래 Controller에서 섬네일이미지의 정보를 반환할 VO를 설계
+
+~~~java
+package org.zerock.domain;
+import lombok.Data;
+@Data
+public class AttachFileDTO {
+	private String fileName;
+	private String uploadPath;
+	private String uuid;
+	private boolean image;
+}
+~~~
+
+~~~java
+@PostMapping(value = "/uploadAjaxAction", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public ResponseEntity<List<AttachFileDTO>> uploadAjaxPost(MultipartFile[] uploadFile) {
+		List<AttachFileDTO> list = new ArrayList<>();
+		String uploadFolder = "C:\\upload";
+		String uploadFolderPath = getFolder();
+		// make folder --------
+		File uploadPath = new File(uploadFolder, uploadFolderPath);
+		if (uploadPath.exists() == false) {
+			uploadPath.mkdirs();
+		}
+		// make yyyy/MM/dd folder
+		for (MultipartFile multipartFile : uploadFile) {
+			AttachFileDTO attachDTO = new AttachFileDTO();
+			String uploadFileName = multipartFile.getOriginalFilename();
+			// IE has file path
+			uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\") + 1);
+			log.info("only file name: " + uploadFileName);
+			attachDTO.setFileName(uploadFileName);
+            
+             // UUID 적용
+			UUID uuid = UUID.randomUUID();
+			uploadFileName = uuid.toString() + "_" + uploadFileName;
+			try {
+				File saveFile = new File(uploadPath, uploadFileName);
+				//파일 업로드
+                 multipartFile.transferTo(saveFile);
+				attachDTO.setUuid(uuid.toString());
+				attachDTO.setUploadPath(uploadFolderPath);
+
+				// check image type file
+				if (checkImageType(saveFile)) { //checkImageType 메소드는 아래에 있음
+					attachDTO.setImage(true);
+					FileOutputStream thumbnail
+                        = new FileOutputStream(new File(uploadPath, "s_" + uploadFileName));
+                  //섬네일 생성 (UUID적용된 원본을 이용)
+                  Thumbnailator.createThumbnail(multipartFile.getInputStream(), thumbnail, 100, 100);
+					thumbnail.close();
+				}
+
+                // add to List
+				list.add(attachDTO);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} // end for
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+
+	private boolean checkImageType(File file) {
+		try {
+			String contentType = Files.probeContentType(file.toPath());
+			return contentType.startsWith("image");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+~~~
+
+
+
+
 
 # 23장 브라우저에서 섬네일 처리
-23.1 < input type='file' >의 초기화
-23.2 업로드된 이미지 처리
+## 23.1 < input type='file' >의 초기화
+
+type=file인 input 태그는 readOnly라 따로 수정이 불가능함. 따라서 clone을 이용
+
+var cloneObj = $(".uploadDiv").clone();
+
+~~~javascript
+var cloneObj = $(".uploadDiv").clone();
+$("#uploadBtn").on("click", function(e) {
+			var formData = new FormData();
+    
+			......	
+            
+            $.ajax({
+				url : '/uploadAjaxAction',
+				processData : false,
+				contentType : false,
+				data : formData,
+				type : 'POST',
+				dataType : 'json',
+				success : function(result) {
+					console.log(result);
+					
+					$(".uploadDiv").html(cloneObj.html());
+
+				}
+			}); //$.ajax
+}
+~~~
+
+
+
+## 23.2 업로드된 이미지 처리
+
+업로드된 결과를 JSON으로 받아왔기 때문에 이를 이용해서 화면에 적절한 섬세닝을 보여주는 것으로 피드백을 줄 수 있다.
+
+1. 파일이름 출력
+
+controller로 부터 JSON데이터를 결과로써 받는다.
+
+`controller`
+
+~~~java
+	@GetMapping("/display")
+	@ResponseBody
+	public ResponseEntity<byte[]> getFile(String fileName) {
+        log.info("fileName: " + fileName);
+        File file = new File("c:\\upload\\" + fileName);
+        log.info("file: " + file);
+        ResponseEntity<byte[]> result = null;
+
+        try {
+            HttpHeaders header = new HttpHeaders();
+            //probeContentType()을 이용해서 확장자에 따른 MIME 타입을 지정해서 브라우저로 알려줄 준비를 한다
+            header.add("Content-Type", Files.probeContentType(file.toPath()));
+            result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file), header,HttpStatus.OK);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return result;
+    }
+~~~
+
+`uploadAjax.jsp`
+
+~~~html
+<div class='uploadDiv'>
+		<input type='file' name='uploadFile' multiple>
+	</div>
+
+	<div class='uploadResult'>
+		<ul>
+
+		</ul>
+	</div>
+
+~~~
+
+​	Ajax처리의 success 에서 이뤄질 작업을 showUploaderFile 함수에 정의해 둔다.
+
+이떄, 받아온 JSON데이터안의 필드를 통해  img태그의 src url을 획득하고,  요청을 다시 보낼 준비를 한다. 
+
+`uploadAjax.jsp`
+
+~~~html
+<li><img src='/display?fileName="+fileCallPath+"'><li>
+~~~
+
+`uploadAjax.jsp`
+
+ul 태그 선택
+
+~~~javascript
+var uploadResult = $(".uploadResult ul");
+function showUploadedFile(uploadResultArr) {
+			var str = "";
+			$(uploadResultArr).each(
+					function(i, obj) {
+						if (!obj.image) {
+                          //이미지가 아닌 일반파일이라면  정적리소스인 default 이미지 파일을 출력한다.
+							str += "<li><img src='/resources/img/attach.png'>"
+									+ obj.fileName + "</li>";
+						} else { 
+                           //이미지 첨부파일
+						 //파일이름//str += "<li>" + obj.fileName + "</li>";
+                            
+    
+                            var fileCallPath 
+                            = encodeURIComponent( obj.uploadPath+ "/s_"+obj.uuid+"_"+obj.fileName);
+                            str += "<li><img src='/display?fileName="+fileCallPath+"'><li>";//URL에 이미지파일 이름의 공백문자나 한글이름등이 문제가 될 수 있다 URL호출에 적합한 문자열로 인코딩해야함.
+						}
+					});
+			uploadResult.append(str);
+		}
+~~~
+
+Ajax의 success에서 showUploadedFile을 호출한다.
+
+`uploadAjax.jsp`
+
+~~~javascript
+				success : function(result) {
+					console.log(result);
+
+                      //호출
+    				showUploadedFile(result);
+					$(".uploadDiv").html(cloneObj.html());
+				}
+~~~
+
+//업로드 끝
 
 # 24장 첨부파일의 다운로드 혹은 원본 보여주기
-24.1 첨부파일의 다운로드
-24.2 원본 이미지 보여주기
-24.3 첨부파일 삭제
+
+실습의 편의를 위해 C:/upload/ 폴더에 여러 영문파일을 다운로드할 예정.
+
+## 24.1 첨부파일의 다운로드
+
+~~~java
+@GetMapping(value = "/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+	@ResponseBody
+	public ResponseEntity<Resource> downloadFile(@RequestHeader("User-Agent") String userAgent, 			String fileName) {
+		//리턴타입으로 byte[]를 사용할 수 있으나, 로직이 복잡하다.
+		//MIME 타입은 다운로드를 할 수 있는 application/octet-stream 으로 지정한다.
+		Resource resource = new FileSystemResource("c:\\upload\\" + fileName);
+		if (resource.exists() == false) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		String resourceName = resource.getFilename();
+		// UUID제거후 원본파일이름
+		String resourceOriginalName = resourceName.substring(resourceName.indexOf("_") + 1);
+		HttpHeaders headers = new HttpHeaders();
+		try {
+			boolean checkIE = (userAgent.indexOf("MSIE") > -1 || userAgent.indexOf("Trident") > -1);
+			String downloadName = null;
+            // URL 인코딩 작업 ???
+			if (checkIE) {
+               downloadName = URLEncoder.encode(resourceOriginalName, "UTF8").replaceAll("\\+", " ");
+			} else {
+			  downloadName = new String(resourceOriginalName.getBytes("UTF-8"), "ISO-8859-1");
+			}
+			//Content-Disposion 덕분에 한글이름이 깨지는 것을 방지할 수 있음.
+			headers.add("Content-Disposition", "attachment; filename=" + downloadName);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return new ResponseEntity<Resource>(resource, headers, HttpStatus.OK);
+	}
+~~~
+
+
+
+
+
+## 24.2 원본 이미지 보여주기
+
+원본이미지를 보여주는 자바스크립트 함수 showImage는 $(document).ready() 바깥쪽에 정의한다.
+
+이유: DOM에서( <a> 태그에서 자바스크립트 함수를 직접호출 할 수 있게끔)
+
+- uploadPath : 2020\01\28  등으로 역슬래시임.
+
+~~~javascript
+function showImage(fileCallPath){
+    //alert(fileCallPath);
+    $(".bigPictureWrapper").css("display","flex").show();
+    $(".bigPicture")
+	  .html("<img src='/display?fileName="+encodeURI(ileCallPath)+"'>")
+	  .animate({width:'100%', height: '100%'}, 1000);
+	}
+	$(".bigPictureWrapper").on("click", function(e){
+	  $(".bigPicture").animate({width:'0%', height: '0%'}, 1000);
+	  setTimeout(() => {
+	    $(this).hide();
+	}, 1000);
+});
+
+ function showUploadedFile(uploadResultArr){
+   var str = "";
+   $(uploadResultArr).each(function(i, obj){
+     if(!obj.image){
+         //쌈네일 이미지를 <a>태그로 둘러, 클릭시 일반파일 다운로드가 진행되도록
+         //링크url은 파일이름이 한글일 경우 문제가 발생함. 따라서, 인코딩을 진행한다.
+       var fileCallPath =  encodeURIComponent( obj.uploadPath+"\\"+ obj.uuid +"_"+obj.fileName);
+       var fileLink = fileCallPath.replace(new RegExp(/\\/g),"/");
+
+         str += "<li><a href='/download?fileName="+fileLink+"'><img src='/resources/img/attach.png'>"+obj.fileName+"</a>"+
+           "<span data-file=\'"+fileLink+"\' data-type='file'> x </span>"+
+           "<div></li>"
+     }else{
+       //썸네일 path (<img>에 사용됨)  ??아래는 역슬래시처리해주고 여기는 왜 안해줘??
+       var fileCallPath =  encodeURIComponent( obj.uploadPath+ "\\s_"+obj.uuid +"_"+obj.fileName);
+       //원본(uuid적용된)path  (<a>에 사용됨, download진행)
+       var originPath = obj.uploadPath+ "\\"+obj.uuid +"_"+obj.fileName;
+       originPath = originPath.replace(new RegExp(/\\/g),"/");
+         //썸내일 이미지를 <a>태그로 둘러, 클릭시 이미지파일 원본이 다운로드가 진행되도록
+       str += "<li><a href=\"javascript:showImage(\'"+originPath+"\')\"><img src='/display?fileName="+fileCallPath+"'></a><li>";
+     }
+   });
+   
+   uploadResult.append(str);
+ }
+
+~~~
+
+## 24.3 첨부파일 삭제
+
+~~~javascript
+// X표시를 눌렀을 때. 이벤트발생
+// 이벤트 위임방식 , <span>태그는 파일업로드가 진행된 이후에 생성될 태그이기 때문에
+// uploadResult에 이벤트가 걸리는게 아니고 span에 걸림
+// 아래 this 는 span을 뜻함
+$(".uploadResult").on("click","span", function(e){
+	  var targetFile = $(this).data("file");
+	  var type = $(this).data("type");
+	  console.log(targetFile);
+	  $.ajax({
+	    url: '/deleteFile',
+	    data: {fileName: targetFile, type:type},
+	    dataType:'text',
+	    type: 'POST',
+	      success: function(result){
+	         alert(result);
+	       }
+	  }); //$.ajax
+	});
+
+// 썸네일 옆에 X 표시 생성
+function showUploadedFile(uploadResultArr){
+   var str = "";
+   $(uploadResultArr).each(function(i, obj){
+     if(!obj.image){
+       var fileCallPath =  encodeURIComponent( obj.uploadPath+"/"+ obj.uuid +"_"+obj.fileName);
+       var fileLink = fileCallPath.replace(new RegExp(/\\/g),"/");
+       str += "<li><div><a href='/download?fileName="+fileCallPath+"'>"+
+           "<img src='/resources/img/attach.png'>"+obj.fileName+"</a>"+
+           "<span data-file=\'"+fileCallPath+"\' data-type='file'> x </span>"+
+           "<div></li>"
+     }else{
+       var fileCallPath =  encodeURIComponent( obj.uploadPath+ "/s_"+obj.uuid +"_"+obj.fileName);
+       var originPath = obj.uploadPath+ "\\"+obj.uuid +"_"+obj.fileName;
+       originPath = originPath.replace(new RegExp(/\\/g),"/");
+       str += "<li><a href=\"javascript:showImage(\'"+originPath+"\')\">"+
+              "<img src='display?fileName="+fileCallPath+"'></a>"+
+              "<span data-file=\'"+fileCallPath+"\' data-type='image'> x </span>"+
+              "<li>";
+     }
+   });
+   uploadResult.append(str);
+ }
+~~~
+
+p.549 코드 다시 보기
+
+
+
+
 
 # 25장 프로젝트의 첨부파일 - 등록
-25.1 첨부파일 정보를 위한 준비
-25.2 등록을 위한 화면 처리
-25.3 BoardController, BoardService의 처리
+## 25.1 첨부파일 정보를 위한 준비
+
+BoardAttachVO 설계하기
+
+- uuid -pk
+
+- uploadPath
+
+- fileName
+
+- fileType
+
+- bno    (어떤 게시물 소속인지 게시물PK를 갖을 수 있도록 FK를 지정한다.)
+
+  
+
+## 25.2 등록을 위한 화면 처리
+
+## 25.3 BoardController, BoardService의 처리
+
+
 
 # 26장 게시물의 조회와 첨부파일
-26.1 BoardService와 BoardController 수정
-26.2 BoardController의 변경과 화면 처리
+## 26.1 BoardService와 BoardController 수정
+
+## 26.2 BoardController의 변경과 화면 처리
 
 # 27장 게시물의 삭제와 첨부파일
-27.1 첨부파일 삭제 처리
+## 27.1 첨부파일 삭제 처리
 
 # 28장 게시물의 수정과 첨부파일
-28.1 화면에서 첨부파일 수정
-28.2 서버측 게시물 수정과 첨부파일
+## 28.1 화면에서 첨부파일 수정
+
+## 28.2 서버측 게시물 수정과 첨부파일
 
 # 29장 잘못 업로드된 파일 삭제
-29.1 잘못 업로드된 파일의 정리
-29.2 Quartz 라이브러리 설정
-29.3 BoardAttachMapper 수정
-29.4 cron 설정과 삭제 처리
+## 29.1 잘못 업로드된 파일의 정리
+
+## 29.2 Quartz 라이브러리 설정
+
+## 29.3 BoardAttachMapper 수정
+
+## 29.4 cron 설정과 삭제 처리
+

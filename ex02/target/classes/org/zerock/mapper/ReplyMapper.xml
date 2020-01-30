@@ -27,7 +27,7 @@
 
 	<update id="update">
 
-		update tbl_reply set reply = #{reply},updatedate = sysdate 
+		update tbl_reply set reply = #{reply},updatedate = now() 
 		where rno = #{rno}
 
 	</update>
@@ -44,8 +44,14 @@
 	</select -->
 
 <select id="getListWithPaging" resultType="org.zerock.domain.ReplyVO">
-
   <![CDATA[
+ select  rno, bno, reply, replyer, replydate, updatedate
+ from tbl_reply 
+    where bno = #{bno}
+    order by rno asc
+]]>
+
+<!--   <![CDATA[
  select  rno, bno, reply, replyer, replydate, updatedate
  from 
    (
@@ -56,7 +62,7 @@
     and rno > 0
     and rownum <= #{cri.pageNum} * #{cri.amount}
    ) where rn > (#{cri.pageNum} -1) * #{cri.amount}
-]]>
+]]> -->
 
 </select>
 
