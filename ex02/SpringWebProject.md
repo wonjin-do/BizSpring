@@ -1180,6 +1180,35 @@ Mapper Interface
 
 ## 8.2 영속 영역의 CRUD 구현
 
+방법1)
+
+`useGeneratedKeys="true" keyProperty="bno"`속성 두개로 Oracle의 nextVal()을 대체한다.
+
+~~~xml
+	<insert id="insert" useGeneratedKeys="true" keyProperty="bno">
+		insert into tbl_board (bno,title,content,writer)
+		values (#{bno}, #{title}, #{content}, #{writer})
+	</insert>	
+~~~
+
+방법2)
+
+`<selectKey keyProperty="bno" order="BEFORE">` 로 선행작업을 진행시킨다.
+
+~~~xml
+<insert id="insertSelectKey">
+		<selectKey keyProperty="bno" order="BEFORE" resultType="long">
+			select max(bno)+1 from tbl_board
+		</selectKey>
+		insert into tbl_board (bno,title,content, writer)
+		values (#{bno}, #{title}, #{content}, #{writer})
+	</insert>
+~~~
+
+
+
+
+
 # 9장 비즈니스 계층
 
 ## 9.1 비지니스 계층의 설정
@@ -1255,11 +1284,104 @@ p.262 자바스크립트 처리
 ## 13.2 BoardController와 BoardService 수정
 
 # 14장 페이징 화면 처리
+
+페이지: 게시판 하단에 있는 번호 보통 10단위로 1 ~ 10,  11 ~ 20, 21 ~ 30 ......으로 위치함
+
 ## 14.1 페이징 처리할 때 필요한 정보들
 
 ## 14.2 페이징 처리를 위한 클래스 설계
 
+~~~java
+@GetMapping("/list")
+	public void list (Criteria cri, Model model) {
+     
+        //Criteria의 필드에 PageNum과 amount가 맵핑됨.
+		model.addAttribute("list",service.getList(cri));
+		model.addAttribute("pageMaker",new PageDTO(cri, 123));//123이 DB에서 받아와야 할 total을 대신함
+		System.out.println(new PageDTO(cri, 123));
+	}
+~~~
+
+- Input
+
+  - 사용자 측 (Criteria VO를 커맨드객체로 이용함)
+    - PageNum : 게시판에 있는 여러 게시물들 中 사용자가 보고 있는 위치
+    - amount : 여러 게시물을 최대 몇개 단위로 볼 것인지 정하는 값
+  - DB 측 
+    - total : 게시물 총 갯수를 query를 통해 결과값 받아옴
+
+- output
+
+  - Input작업을 통해 PageDTO객체 생성 
+
+  - CriteriaVO에서 계산된 값
+
+    - 게시물
+      - start
+        - 현재 페이지 PageNum 에서 첫 게시물 번호
+        - start = (pageNum-1) * amount
+      - end (계산할 필요없음)
+        - MySQL query의 limit #{start} , #{amount} 로 가능함
+          - #{start} + 1 부터 amount 갯수만큼 조회함.
+
+  - PageDTO에서 계산된 값
+
+    - 페이징
+
+      - endPage 
+
+        - 하단 페이지 번호칸의 마지막 번호
+        - 현재 pageNum이 결정함
+        - endPage = (int) (Math.ceil(cri.getPageNum() / 10.0)) * 10
+
+      - startPage
+
+        - endPage - (pageLength - 1)
+        - pageLength
+          - 하단 페이지 번호칸들의 길이
+
+      - prev, next
+
+        - prev
+
+          - startPage가 결정
+
+          - ~~~java
+            this.prev = this.startPage > 1;
+            ~~~
+
+        - next
+
+          - endPage 와 realEnd 가 결정
+
+          - ~~~java
+            this.next = this.endPage < realEnd;
+            ~~~
+
+      - 마지막 페이지 단까지 온 상황
+
+        - endPage값을 더 세밀하게 조정해줘야 함(값을 더 내림)
+
+          ~~~java
+              int realEnd = (int) (Math.ceil((total * 1.0) / cri.getAmount()));
+              if (realEnd <= this.endPage) {
+                this.endPage = realEnd;
+              }
+          ~~~
+
+
+
 ## 14.3 JSP에서 페이지 번호 출력
+
+p.309 "<a>태그의 href 속성값으로 페이지 번호를 가지도록 수정하는 것은 직접 링크를 처리하는 방식이며, 검색조건이 붙고난 후의 처리가 복잡하게 됨"
+
+p.314도 마찬가지임
+
+--> 게시글목록이 있는 /board/list 에서 `게시글 번호` 와 `페이징 번호`에 있는 <a href=' '>값을 제어할 때, <form> 태그와 hidden 속성, JavaScript를 이용해서 URL을 간단하게 만들어라
+
+이유. 검색조건이 URL에 달리게 될 때 , 복잡함을 가중시킴
+
+
 
 ## 14.4 조회 페이지로 이동
 
