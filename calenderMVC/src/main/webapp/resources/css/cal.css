@@ -1,0 +1,34 @@
+@charset "UTF-8";
+h1{
+    color:red;
+}
+a{
+	text-decoration:none;
+}
+.day{
+	
+	height:50px; 
+	display: inline-block;
+	border: 1px solid black;
+	float: left;
+	//background-color: yellow;
+}
+
+.dayName{
+	
+	height:20px; 
+	display: inline-block;
+	border: 1px solid black;
+	float: left;
+	text-align: center;
+}
+
+
+#head{
+	width:400px;
+	height:30px;
+	border: 1px solid black;
+	text-align: center;
+
+	
+}
