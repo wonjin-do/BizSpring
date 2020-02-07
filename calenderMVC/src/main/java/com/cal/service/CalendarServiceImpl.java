@@ -39,6 +39,7 @@ public class CalendarServiceImpl implements CalendarService{
 		int prevEndDay;
 		int cell = 1;
 		int days[][] = new int[totalCell][2];
+		int numOfRows;
 		String meaning[] = new String[totalCell];
 		
 		log.info("year: "+year);
@@ -55,25 +56,29 @@ public class CalendarServiceImpl implements CalendarService{
 		endDay = cal.getActualMaximum(Calendar.DATE);   // 해당 월 마지막 날짜 28, 30, 31
 		dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);      // 해당 날짜의 요일 숫자값(1:일요일 … 7:토요일)
 		
+		numOfRows =(int)Math.ceil((dayOfWeek + endDay - 1)/7.0);
+		
+		
 		//지난 달 일수 채우기
 		for(;cell<dayOfWeek;cell++) {
 			days[cell][0] = prevEndDay - dayOfWeek + cell;
 		}
 		//현재 달 일수 채우기
 		SimpleDateFormat sdfYear = new SimpleDateFormat("yyyy");
+		SimpleDateFormat sdfMonth = new SimpleDateFormat("MM");
 		SimpleDateFormat sdfDay = new SimpleDateFormat("dd");
 		Map<Date, String> holidays = getHolidays();         //현재 달 공휴일 
-		System.out.println(holidays); 
 		for(int day=1; day <= endDay; cell++, day++) {
 			days[cell][0] =  day;
 			for(Map.Entry<Date, String> holi : holidays.entrySet()) {
 				Date part = holi.getKey();
 				String strYear = sdfYear.format(part);
+				String strMonth = sdfMonth.format(part);
 				String strDay = sdfDay.format(part);
 				int intYear= Integer.parseInt(strYear);
+				int intMonth = Integer.parseInt(strMonth);
 				int intDay = Integer.parseInt(strDay);
-				
-				if(intYear==year && intDay==day && days[cell][0] == intDay) {
+				if(intYear==year && intMonth==month && intDay==day) {
 					days[cell][1] = 1;// 휴일이다.
 					meaning[cell] = holi.getValue();
 				}
@@ -84,7 +89,7 @@ public class CalendarServiceImpl implements CalendarService{
 		for(int day=1;cell<=days.length-1;cell++,day++) {
 			days[cell][0] = day;
 		}
-		cldVO = new CalendarVO(year, month, endDay, dayOfWeek, days, meaning);
+		cldVO = new CalendarVO(year, month, endDay, dayOfWeek, numOfRows, days, meaning);
 		return cldVO;
 	}
 	
@@ -98,7 +103,6 @@ public class CalendarServiceImpl implements CalendarService{
 	public List<Date> getHodliday(int year, int month) {
 		// TODO Auto-generated method stub
 		 String len2month = String.format("%02d", month);
-		 System.out.println("len2month: "+ len2month);
 		return calendarMapper.getHoliday(year, len2month);
 	}
 
