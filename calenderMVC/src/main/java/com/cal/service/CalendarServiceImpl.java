@@ -70,6 +70,7 @@ public class CalendarServiceImpl implements CalendarService{
 		Map<Date, String> holidays = getHolidays();         //현재 달 공휴일 
 		for(int day=1; day <= endDay; cell++, day++) {
 			days[cell][0] =  day;
+			
 			for(Map.Entry<Date, String> holi : holidays.entrySet()) {
 				Date part = holi.getKey();
 				String strYear = sdfYear.format(part);
