@@ -10,9 +10,10 @@ import lombok.NoArgsConstructor;
 public class CalendarVO {
 	private int year;
 	private int month;
-	private int endDay;
+	private int endDay;// 28, 30, 31 중 하나
 	private int dayOfWeek;
 	
-	private int days[];
+	private int days[][];
+	private String meaning[];
 	
 }

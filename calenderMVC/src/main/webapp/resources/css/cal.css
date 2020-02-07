@@ -5,6 +5,19 @@ h1{
 a{
 	text-decoration:none;
 }
+
+td, th{
+		height:120px; 
+		width: 120px;
+		border: 1px solid black;
+		text-align: left;
+		vertical-align: top;
+}
+th{
+	height: 30px;
+	
+}
+
 .day{
 	
 	height:50px; 
@@ -29,6 +42,19 @@ a{
 	height:30px;
 	border: 1px solid black;
 	text-align: center;
+}
 
-	
+input{
+	border: 0px;
+}
+.schedule  {
+	/* background-color: #FFE4C4 */
+}
+
+.schedule :nth-of-type(2n) {
+	background-color: #FFE4C4
+}
+
+.schedule :nth-of-type(2n-1) {
+	background-color: #7FFFD4
 }
