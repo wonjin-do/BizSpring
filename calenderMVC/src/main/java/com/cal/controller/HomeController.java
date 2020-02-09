@@ -16,15 +16,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.cal.service.CalendarService;
 import com.cal.vo.CalendarVO;
 import com.cal.vo.MemberVO;
+import com.cal.vo.ScheduleVO;
 
 import lombok.extern.java.Log;
 /**
@@ -38,12 +41,12 @@ public class HomeController {
 	CalendarService calendarService; 
 	
 	@GetMapping(value = "/")
-	public String home(CalendarVO cldVO, Locale locale, Model model) throws ParseException {
+	public String home(CalendarVO cldVO, HttpServletRequest request, Model model) throws ParseException {
 		log.info("접속");
-		CalendarVO res = calendarService.getHome(cldVO);
 		
-		
-		
+		HttpSession session = request.getSession();
+		String id = (String)session.getAttribute("customer");
+		CalendarVO res = calendarService.getHome(cldVO, id);
 		model.addAttribute("cldVO", res);
 		return "home";
 		
@@ -86,8 +89,20 @@ public class HomeController {
 		return "redirect:/";
 	}
 	
-	
-	
+	@PostMapping(value="/schedule/new")
+	public ResponseEntity<String> create(@RequestBody ScheduleVO vo, HttpServletRequest req ) {
+		HttpSession session = req.getSession();
+		log.info("ScheduleVO: " + vo);
+		String id = (String)session.getAttribute("customer");
+		vo.setUserid(id);
+		int insertCount = calendarService.addSchedule(vo);
+		log.info("createSchedule Count: " + insertCount);
+
+		return insertCount == 1  
+				? new ResponseEntity<>("success", HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+		
 	
 }
 

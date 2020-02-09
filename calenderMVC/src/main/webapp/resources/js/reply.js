@@ -7,7 +7,7 @@ var replyService = (function() {
 
 		$.ajax({
 			type : 'post',
-			url : '/replies/new',
+			url : '/schedule/new',
 			data : JSON.stringify(reply),
 			contentType : "application/json; charset=utf-8",
 			success : function(result, status, xhr) {

@@ -6,14 +6,14 @@ import java.util.List;
 
 import com.cal.vo.CalendarVO;
 import com.cal.vo.MemberVO;
+import com.cal.vo.ScheduleVO;
 
 public interface CalendarService {
-	public CalendarVO getHome(CalendarVO cldVO) throws ParseException;
-	
-	public List<Date> getHodliday(int year, int month);
-	
+	public CalendarVO getHome(CalendarVO cldVO, String id) throws ParseException;
 	
 	public void register(MemberVO member);
 
 	public boolean login(MemberVO member);
+	
+	public int addSchedule(ScheduleVO vo);
 }

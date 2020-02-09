@@ -1,5 +1,7 @@
 package com.cal.vo;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,5 +17,5 @@ public class CalendarVO {
 	private int numOfRows;
 	private int days[][];
 	private String meaning[];
-	
+	private List<ScheduleVO> scheduleList;
 }

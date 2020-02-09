@@ -73,40 +73,43 @@
 										style="background-color: #DCDCDC; opacity: 0.5;"><c:choose>
 											<c:when
 												test="${day eq 1 || day eq 7 || cal.days[cell][1] eq 1}">
-												<div style="color: red; font-weight: bold;">${cal.days[cell][0]}</div>
+												<!--이전달, 다음달의 날짜 음영처리 -->
+												<!--토요일, 일요일-->
+												<div class="holiday day">${cal.days[cell][0]}</div>
 											</c:when>
 											<c:otherwise>
-												<div style="color:; font-weight: bold;">${cal.days[cell][0]}</div>
+												<div class="day">${cal.days[cell][0]}</div>
 											</c:otherwise>
 										</c:choose></td>
 								</c:when>
 								<c:otherwise>
-									<c:choose>
-										<c:when
-											test="${day eq 1 || day eq 7 || cal.days[cell][1] eq 1}">
-											<td class="cell">
-												<div style="color: red; font-weight: bold;">${cal.days[cell][0]}</div>
-												<c:if test="${cal.days[cell][1] eq 1 }">
-													<div>${cal.meaning[cell]}</div>
-												</c:if> <input class="schedule" type="text" value="과제" readonly="readonly">
-											</td>
-										</c:when>
-										<c:otherwise>
-											<td class="cell">
-												<div style="color:; font-weight: bold;">${cal.days[cell][0]}</div>
-												<c:if test="${ !empty cal.meaning[cell] }">
-													<div>${cal.meaning[cell]}</div>
-												</c:if> <input class="schedule" type="text" value="과제"
-												readonly="readonly">
-
-											</td>
-										</c:otherwise>
-									</c:choose>
+									
+									<td class="cell" id="${cell-cal.dayOfWeek +1}">
+										<c:choose>
+											<c:when	test="${day eq 1 || day eq 7 || cal.days[cell][1] eq 1}">
+												<!--현재 달 날짜-->
+												<!--토요일, 일요일-->
+												<div  class="holiday day">${cal.days[cell][0]}</div>
+											</c:when>
+											<c:otherwise>
+												<div class="day">${cal.days[cell][0]}</div>		
+											</c:otherwise>
+										</c:choose>
+										<c:if test="${ !empty cal.meaning[cell] }">
+											<div>${cal.meaning[cell]}</div>
+										</c:if>
+										<c:if test="${ empty cal.meaning[cell] }">
+											<div></div>
+										</c:if>
+										
+										<div class="schedule">
+											<div id="1">과제</div>
+											<div id="1">과제</div>
+										</div>
+										<div class="more" style="text-align: left; ; font-weight: bold">+3</div>
+									</td>
 								</c:otherwise>
 							</c:choose>
-
-
-
 							<c:set var="cell" value="${cell+1}" />
 						</c:forEach>
 					</tr>
@@ -123,24 +126,28 @@
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
+			<!--user, startdate, enddate, title, content  -->
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal"
 						aria-hidden="true">&times;</button>
-					<h4 class="modal-title" id="myModalLabel">REPLY MODAL</h4>
+					<h4 class="modal-title" id="myModalLabel">스케줄 등록</h4>
 				</div>
 				<div class="modal-body">
 					<div class="form-group">
-						<label>Reply</label> <input class="form-control" name='reply'
-							value='New Reply!!!!'>
+						<label>Title</label> <input class="form-control" name='title'
+							value='' placeholder="일정 작성해주세요">
 					</div>
 					<div class="form-group">
-						<label>Replyer</label> <input class="form-control" name='replyer'
-							value='replyer'>
+						<label>시작일</label> <input class="form-control" name='startDate'
+							value='' type="date">
 					</div>
 					<div class="form-group">
-						<label>Reply Date</label> <input class="form-control"
-							name='replyDate' value='2018-01-01 13:13'>
+						<label>종료일</label> <input class="form-control" name='endDate'
+							 value='' type="date">
+					</div>
+					<div class="form-group">
+						<label>설명</label> <textarea rows="3" cols="70" name='content'></textarea>
 					</div>
 
 				</div>
@@ -161,6 +168,7 @@
 </body>
 
 </html>
+<script type="text/javascript" src="/resources/js/reply.js"></script>
 <script>
 	var date = new Date();
 	var year = date.getFullYear();
@@ -228,49 +236,63 @@
 	})
 
 
-	   var modal = $(".modal");
-    var modalInputReply = modal.find("input[name='reply']");
-    var modalInputReplyer = modal.find("input[name='replyer']");
-    var modalInputReplyDate = modal.find("input[name='replyDate']");
+	var modal = $(".modal");
+    var modalInputtitle = modal.find("input[name='title']");
+    var modalInputstartDate = modal.find("input[name='startDate']");
+    var modalInputendDate = modal.find("input[name='endDate']");
+    var modalInputcontent = modal.find("textarea[name='content']");
     
-    var modalModBtn = $("#modalModBtn");
-    var modalRemoveBtn = $("#modalRemoveBtn");
-    var modalRegisterBtn = $("#modalRegisterBtn");
+    var modalModBtn = $("#modalModBtn");//변경
+    var modalRemoveBtn = $("#modalRemoveBtn");//삭제
+    var modalRegisterBtn = $("#modalRegisterBtn");//등록
     
     $("#modalCloseBtn").on("click", function(e){
     	
     	modal.modal('hide');
     });
     
-    $(".schedule").on("click", function(e){
-      console.log("스케줄");
-      modal.find("input").val("");
-      modalInputReplyDate.closest("div").hide();
-      modal.find("button[id !='modalCloseBtn']").hide();
-      
-      modalRegisterBtn.show();
-      
-      $(".modal").modal("show");
+    function pad(n, width) {
+    	  n = n + '';
+    	  return n.length >= width ? n : new Array(width - n.length + 1).join('0') + n;
+    	}
+    
+    $(".day").on("click", function(e){
+    	var year = parseInt(${cal.year},10);
+		var month = parseInt(${cal.month},10);
+		var day = parseInt(this.textContent,10);
+		month = pad(month, 2);
+		day = pad(day,2);
+		var date = year + '-'+month + '-'+ day;
+    	modal.find("input[name = 'startDate']").val(date);
+    	modal.find("input[name = 'endDate']").val(date);
+	    //modalInputReplyDate.closest("div").hide();
+	    modal.find("button[id !='modalRegisterBtn']").hide();
+	      
+	      modalRegisterBtn.show();
+	      
+	      $(".modal").modal("show");   	
       
     });
     
+    
 
     modalRegisterBtn.on("click",function(e){
-      
-      var reply = {
-            reply: modalInputReply.val(),
-            replyer:modalInputReplyer.val(),
-            bno:bnoValue
+      console.log(modalInputstartDate.val());
+      var schedule = {
+    		title: modalInputtitle.val(),
+   			startdate: modalInputstartDate.val(),
+			enddate: modalInputendDate.val(),
+			content: modalInputcontent.val()
           };
-      replyService.add(reply, function(result){
+	    replyService.add(schedule, function(result){
         
         alert(result);
+        if(result == "success"){
+        	
+        }
         
         modal.find("input").val("");
         modal.modal("hide");
-        
-        //showList(1);
-        showList(-1);
         
       });
       
@@ -300,34 +322,6 @@
     });
   
     
-/*     modalModBtn.on("click", function(e){
-      
-      var reply = {rno:modal.data("rno"), reply: modalInputReply.val()};
-      
-      replyService.update(reply, function(result){
-            
-        alert(result);
-        modal.modal("hide");
-        showList(1);
-        
-      });
-      
-    });
-
-    modalRemoveBtn.on("click", function (e){
-    	  
-  	  var rno = modal.data("rno");
-  	  
-  	  replyService.remove(rno, function(result){
-  	        
-  	      alert(result);
-  	      modal.modal("hide");
-  	      showList(1);
-  	      
-  	  });
-  	  
-  	}); */
-
     modalModBtn.on("click", function(e){
     	  
    	  var reply = {rno:modal.data("rno"), reply: modalInputReply.val()};

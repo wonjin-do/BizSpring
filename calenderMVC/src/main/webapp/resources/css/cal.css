@@ -22,13 +22,9 @@ th{
 }
 
 .day{
-	
-	height:50px; 
-	display: inline-block;
-	border: 1px solid black;
-	float: left;
-	//background-color: yellow;
+	font-weight: bold;
 }
+
 
 .dayName{
 	
@@ -39,7 +35,9 @@ th{
 	text-align: center;
 }
 
-
+.holiday{
+	color: red;
+}
 #head{
 	width:400px;
 	height:30px;
@@ -54,10 +52,10 @@ input{
 	/* background-color: #FFE4C4 */
 }
 
-.schedule :nth-of-type(2n) {
+/* .schedule :nth-of-type(2n) {
 	background-color: #FFE4C4
 }
 
 .schedule :nth-of-type(2n-1) {
 	background-color: #7FFFD4
-}
+} */

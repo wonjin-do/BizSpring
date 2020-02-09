@@ -10,8 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ScheduleVO {
-	private int sno;
-	private int mno;
+	private String userid;
 	private Date startdate;
 	private Date enddate;
 	private String title;

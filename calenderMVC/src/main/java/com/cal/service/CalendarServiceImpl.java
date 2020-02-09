@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import com.cal.mapper.CalendarMapper;
 import com.cal.vo.CalendarVO;
 import com.cal.vo.MemberVO;
+import com.cal.vo.ScheduleVO;
 
 import lombok.extern.java.Log;
 @Service
@@ -29,7 +30,7 @@ public class CalendarServiceImpl implements CalendarService{
 	CalendarMapper calendarMapper;
 	
 	@Override
-	public CalendarVO getHome(CalendarVO cldVO) throws ParseException {
+	public CalendarVO getHome(CalendarVO cldVO, String id) throws ParseException {
 		// TODO Auto-generated method stub
 		int year = (cldVO.getYear() == 0 || cldVO.getMonth()==0)?  Calendar.getInstance().get(Calendar.YEAR):  cldVO.getYear();
 		int month = (cldVO.getYear() == 0 || cldVO.getMonth()==0)?  Calendar.getInstance().get(Calendar.MONTH):  cldVO.getMonth();
@@ -90,7 +91,24 @@ public class CalendarServiceImpl implements CalendarService{
 		for(int day=1;cell<=days.length-1;cell++,day++) {
 			days[cell][0] = day;
 		}
-		cldVO = new CalendarVO(year, month, endDay, dayOfWeek, numOfRows, days, meaning);
+		//days end
+		System.out.println("month: "+month);
+		String strMonth = Integer.toString(month);
+		if(month < 10)
+			strMonth = "0"+strMonth;
+		String strYear = Integer.toString(year);
+		String strTot1 = strYear + "-" + strMonth + "-" + "01";
+		String strTot2 = strYear + "-" + strMonth + "-" + "31";
+		System.out.println(strTot1);
+		System.out.println(strTot2);
+		List<ScheduleVO> scheduleList = calendarMapper.getAllSchedule(strTot1, strTot2, id);
+		System.out.println("test: " + scheduleList.size());
+	
+		for(ScheduleVO x: scheduleList) {
+			System.out.println(x);
+		}
+		
+		cldVO = new CalendarVO(year, month, endDay, dayOfWeek, numOfRows, days, meaning, scheduleList);
 		return cldVO;
 	}
 	
@@ -98,13 +116,6 @@ public class CalendarServiceImpl implements CalendarService{
 	public void register(MemberVO memberVO) {
 		// TODO Auto-generated method stub
 		calendarMapper.register(memberVO);
-	}
-
-	@Override
-	public List<Date> getHodliday(int year, int month) {
-		// TODO Auto-generated method stub
-		 String len2month = String.format("%02d", month);
-		return calendarMapper.getHoliday(year, len2month);
 	}
 
 	@Override
@@ -144,6 +155,13 @@ public class CalendarServiceImpl implements CalendarService{
 			holidays.put(sdf.parse(parts[0]), parts[1]);
 		}
 		return holidays;
+	}
+
+	@Override
+	public int addSchedule(ScheduleVO vo) {
+		// TODO Auto-generated method stub
+		int cnt = calendarMapper.addSchedule(vo);
+		return cnt;
 	}
 
 
