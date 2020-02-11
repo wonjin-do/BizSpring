@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class HolidayVO {
-	private int idx;
-	private Date date;
-	private String meaning;
+	private String meaing;
+	private String isHoliday;
 }

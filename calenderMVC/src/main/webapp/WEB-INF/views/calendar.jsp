@@ -59,61 +59,12 @@
 					<th>토</th>
 				</tr>
 			</thead>
+			<!-- 달력출력  -->
 			<tbody>
-				<c:set var="cell" value="1" />
-				<c:forEach var="week" begin="1" end="${cal.numOfRows }">
-					<tr>
-						<c:forEach var="day" begin="1" end="7">
-							<c:choose>
-								<c:when
-									test="${cell < cal.dayOfWeek || cell >= cal.dayOfWeek + cal.endDay }">
-									<td class="cell" style="background-color: #DCDCDC; opacity: 0.5;">
-									<c:choose>
-											<c:when
-												test="${day eq 1 || day eq 7 || cal.days[cell][1] eq 1}">
-												<!--이전달, 다음달의 날짜 음영처리 -->
-												<!--토요일, 일요일-->
-												<div class="holiday day">${cal.days[cell][0]}</div>
-											</c:when>
-											<c:otherwise>
-												<div class="day">${cal.days[cell][0]}</div>
-											</c:otherwise>
-										</c:choose></td>
-								</c:when>
-								<c:otherwise>
-									
-									<td class="cell" id="${cell-cal.dayOfWeek +1}">
-										<c:choose>
-											<c:when	test="${day eq 1 || day eq 7 || cal.days[cell][1] eq 1}">
-												<!--현재 달 날짜-->
-												<!--토요일, 일요일-->
-												<div  class="holiday day">${cal.days[cell][0]}</div>
-											</c:when>
-											<c:otherwise>
-												<div class="day">${cal.days[cell][0]}</div>		
-											</c:otherwise>
-										</c:choose>
-										<c:if test="${ !empty cal.meaning[cell] }">
-											<div>${cal.meaning[cell]}</div>
-										</c:if>
-										<c:if test="${ empty cal.meaning[cell] }">
-											<div></div>
-										</c:if>
-										
-										<div class="schedule">
-											<div id="1">과제</div>
-											<div id="1">과제</div>
-										</div>
-										<div class="more" style="text-align: left; ; font-weight: bold">+3</div>
-									</td>
-								</c:otherwise>
-							</c:choose>
-							<c:set var="cell" value="${cell+1}" />
-						</c:forEach>
-					</tr>
-				</c:forEach>
-
-
+				
+				
+				
+				
 			</tbody>
 
 		</table>
@@ -164,8 +115,6 @@
 
 
 </body>
-
-</html>
 <script type="text/javascript" src="/resources/js/reply.js"></script>
 <script>
 	var date = new Date();
@@ -358,3 +307,5 @@
 
  
 </script>
+</html>
+

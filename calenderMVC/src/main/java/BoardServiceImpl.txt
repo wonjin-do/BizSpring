@@ -1,0 +1,44 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+public class BoardServiceImpl implements BoardService {
+
+public CalendarDTO createCalendarDTO(int year, int month) {
+		if (year == -1 && month == -1) {
+			year = LocalDate.now().getYear();
+			month = LocalDate.now().getMonthValue();
+		} else if (month == 0) {
+			year = year - 1;
+			month = 12;
+		} else if (month == 13) {
+			year = year + 1;
+			month = 1;
+		}
+		CalendarDTO calendarDTO = new CalendarDTO(year, month);
+		return calendarDTO;
+	}
+
+	public void updateCalendarDTO(CalendarDTO calendarDTO) {
+		List<String> dayList = calendarDTO.getDayList();
+		List<List<String>> calendar = calendarDTO.getCalendar();
+		for (int i = 0; i < calendarDTO.getDayOfTheWeek(); i++) {
+			dayList.add("");
+		}
+		for (int i = 1; i < calendarDTO.getLastDayOfTheMonth() + 1; i++) {
+			dayList.add(LocalDate.of(calendarDTO.getYear(), calendarDTO.getMonth(), i)
+					.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+		}
+		for (int i = calendarDTO.getDayOfTheWeek()
+				+ calendarDTO.getLastDayOfTheMonth(); i < kr.co.domain.CalendarSetting.lengthOfWeek
+						* calendarDTO.getWeeksInTheMonth(); i++) {
+			dayList.add("");
+		}
+		//calendar에 dayList를 add
+		for (int i = 0; i < calendarDTO.getWeeksInTheMonth(); i++) {
+			calendar.add(dayList.subList(kr.co.domain.CalendarSetting.lengthOfWeek * i,
+					kr.co.domain.CalendarSetting.lengthOfWeek * i + 7));
+		}
+	}
+
+}
