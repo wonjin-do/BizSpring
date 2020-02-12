@@ -42,33 +42,21 @@ public class HomeController {
 	public String calendar(@RequestParam(value="year", defaultValue="0")int year, @RequestParam(value="month", defaultValue="0")int month, HttpServletRequest request, Model model)  {
 		log.info("접속");
 		//달력 범위 예외 처리
-		LocalDate d = LocalDate.now();
-		if(year == 0) {
-			year = d.getYear();
-			if(month == 0) {
-				month = d.getMonthValue();
-			}
-		}
-		else {
-			if(month == 0) {
-				year--;
-				month = 12;
-			}else if(month == 13) {
-				year++;
-				month = 1;
-			}
-		}
+		
 		HttpSession session = request.getSession();
 		String id = (String)session.getAttribute("customer");
+		
 		CalDTO calendar = calendarService.showCalendar(year, month, id);
 		model.addAttribute("calendar", calendar);
 		
 		//휴일
 		Map<String, List<HolidayVO>> holidayMap = calendarService.getHoliday(calendar.getYear(), calendar.getMonth());
 		model.addAttribute("holidayMap",holidayMap);
+
+		//if(id == null) return "calendar";
 		
 		//일정
-		Map<String, List<ScheduleVO>> scheduleMap = calendarService.getSchedule(calendar.getYear(), calendar.getMonth(), id);
+		Map<String, List<ScheduleVO>> scheduleMap = calendarService.getScheduleMap(calendar.getYear(), calendar.getMonth(), id);
 		model.addAttribute("scheduleMap",scheduleMap);
 		
 		return "calendar";
@@ -109,7 +97,7 @@ public class HomeController {
 	}
 	
 	@PostMapping(value="/schedule/new", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<ScheduleVO> create(@RequestBody ScheduleVO vo, HttpServletRequest req ) {
+	public ResponseEntity<ScheduleVO> addSchedule(@RequestBody ScheduleVO vo, HttpServletRequest req ) {
 		HttpSession session = req.getSession();
 		log.info("ScheduleVO: " + vo);
 		String id = (String)session.getAttribute("customer");
@@ -122,7 +110,17 @@ public class HomeController {
 				? new ResponseEntity<>(vo, HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-		
+	
+	@GetMapping(value="/schedule/{idx}")
+	public ResponseEntity<ScheduleVO> getSchedule(@RequestParam("idx") int idx, @RequestParam("id")String id, HttpServletRequest req ) {
+		HttpSession session = req.getSession();
+		String sessionId = (String)session.getAttribute("customer");
+		if(!sessionId.equals(id)) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		ScheduleVO scheduleVO = calendarService.getSchedule(idx, id);
+		return new ResponseEntity<ScheduleVO>(scheduleVO, HttpStatus.OK);
+	}
 	//@GetMapping(value = "/")
 		public String home(CalendarVO cldVO, HttpServletRequest request, Model model) throws ParseException {
 			log.info("접속");

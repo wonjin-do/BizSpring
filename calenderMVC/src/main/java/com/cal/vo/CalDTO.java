@@ -47,7 +47,22 @@ public class CalDTO {
 	
 	public CalDTO(int year, int month) {
 		super();
-		
+		LocalDate d = LocalDate.now();
+		if(year == 0) {
+			year = d.getYear();
+			if(month == 0) {
+				month = d.getMonthValue();
+			}
+		}
+		else {
+			if(month == 0) {
+				year--;
+				month = 12;
+			}else if(month == 13) {
+				year++;
+				month = 1;
+			}
+		}
 		this.year = year;
 		this.month = month;
 		

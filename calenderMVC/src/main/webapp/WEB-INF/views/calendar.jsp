@@ -87,10 +87,11 @@
 								</c:forEach>
 								<c:if test="${scheduleMap.containsKey(day.date) }">
 									<c:forEach var="schedule" items="${scheduleMap[day.date]}">
-										<div class="getSchedule" id="${day.date }">${schedule.title }</div>
+										<div class="schedule" data-idx="${schedule.idx }">${schedule.title }</div>
 									</c:forEach>
 								</c:if>
-								
+							
+							
 								
 							</td>
 						</c:forEach>
@@ -201,14 +202,6 @@
 
 	var form = $("form");
 	
-	
-	
-	
-	
-	
-	
-	
-	
 	$("#today").click(function(){
 		form.empty();
 		var input1 = document.createElement('input');
@@ -304,15 +297,25 @@
 		month = pad(month, 2);
 		day = pad(day,2);
 		var date = year + '-'+month + '-'+ day;
-    	modal.find("input[name = 'startDate']").val(date);
-    	modal.find("input[name = 'endDate']").val(date);
+		modalInputstartDate.val(date);
+		modalInputendDate.val(date);
 	    //modalInputReplyDate.closest("div").hide();
 	    modal.find("button[id !='modalRegisterBtn']").hide();
-	      
 	      modalRegisterBtn.show();
-	      
 	      $(".modal").modal("show");   	
-      
+    });
+    
+    $(".schedule").on("click",function(e){
+    	var idx = this.attr("schedule");
+    	replyService.get(idx, function(scheduleVO){
+			    		
+    		modalInputtitle.val(scheduleVO.title);
+    		modalInputstartDate.val(scheduleVO.startdate);
+    		modalInputendDate.val(scheduleVO.enddate);
+    		modal.find("input").attr("readonly","readonly");
+  	      modalRegisterBtn.hide();
+
+  	      $(".modal").modal("show");   	
     });
     
     

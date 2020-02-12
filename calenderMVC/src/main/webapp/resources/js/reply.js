@@ -101,9 +101,9 @@ var replyService = (function() {
 		});
 	}
 
-	function get(rno, callback, error) {
+	function get(idx, callback, error) {
 
-		$.get("/replies/" + rno + ".json", function(result) {
+		$.get("/schedule/" + idx + ".json", function(result) {
 
 			if (callback) {
 				callback(result);

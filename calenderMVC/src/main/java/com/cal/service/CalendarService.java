@@ -19,7 +19,10 @@ public interface CalendarService {
 
 	public Map<String, List<HolidayVO>> getHoliday(int year, int month);
 	
-	public Map<String, List<ScheduleVO>> getSchedule(int year, int month, String id);
+	public Map<String, List<ScheduleVO>> getScheduleMap(int year, int month, String id);
+	
+	public ScheduleVO getSchedule(int idx, String id);
+
 	
 	public int setSchedule(ScheduleVO vo);
 	

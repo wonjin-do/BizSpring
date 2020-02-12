@@ -67,9 +67,16 @@ public class CalendarServiceImpl implements CalendarService{
 		
 		return holidays;
 	}
+	@Override
+	public ScheduleVO getSchedule(int idx, String id) {
+		// TODO Auto-generated method stub
+		ScheduleVO schedule = calendarMapper.getSchedule(idx,id);
+		
+		return null;
+	}
 	
 	@Override
-	public Map<String, List<ScheduleVO>> getSchedule(int year, int month, String id) {
+	public Map<String, List<ScheduleVO>> getScheduleMap(int year, int month, String id) {
 		// TODO Auto-generated method stub
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -80,7 +87,7 @@ public class CalendarServiceImpl implements CalendarService{
 		cal.set(year, month-1, lastDay);
 		String lastDate = sdf.format(cal.getTime());
 		System.out.println(firstdate + " " + lastDate);
-		List<ScheduleVO> scheduleList = calendarMapper.getSchedule(firstdate, lastDate, id);
+		List<ScheduleVO> scheduleList = calendarMapper.getScheduleList(firstdate, lastDate, id);
 		System.out.println("스케줄 갯수: " + scheduleList.size());
 		Map<String, List<ScheduleVO>> scheduleMap = new HashMap<String, List<ScheduleVO>>();
 		
@@ -238,6 +245,8 @@ public class CalendarServiceImpl implements CalendarService{
 //		cldVO = new CalendarVO(year, month, endDay, dayOfWeek, numOfRows, days, meaning, scheduleList);
 		return cldVO;
 	}
+
+
 
 	
 
