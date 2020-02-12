@@ -4,10 +4,10 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
-import com.cal.vo.CalendarVO;
+import com.cal.vo.CalDTO;
 import com.cal.vo.MemberVO;
 import com.cal.vo.ScheduleVO;
-import com.cal.vo.newVersion.CalDTO;
+import com.cal.vo.previousVersion.CalendarVO;
 
 public interface CalService {
 	public CalendarVO getHome(CalendarVO cldVO, String id) throws ParseException;

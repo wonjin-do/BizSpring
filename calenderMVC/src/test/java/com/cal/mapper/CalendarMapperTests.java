@@ -26,8 +26,7 @@ public class CalendarMapperTests {
 	private  CalendarMapper cdm;
 	@Test
 	public void testSelect2() {
-		List<ScheduleVO> scheList = cdm.getAllSchedule("2020-01-01", "2020-01-31", null);
-		log.info(scheList);
+
 	}
 
 	

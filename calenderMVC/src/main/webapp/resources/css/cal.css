@@ -8,7 +8,9 @@ h1{
 a{
 	text-decoration:none;
 }
-
+td:hover {
+	opacity: 1
+}
 td, th{
 		height:120px; 
 		width: 120px;

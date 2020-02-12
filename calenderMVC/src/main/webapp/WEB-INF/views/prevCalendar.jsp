@@ -164,8 +164,6 @@
 
 
 </body>
-
-</html>
 <script type="text/javascript" src="/resources/js/reply.js"></script>
 <script>
 	var date = new Date();
@@ -358,3 +356,5 @@
 
  
 </script>
+
+</html>

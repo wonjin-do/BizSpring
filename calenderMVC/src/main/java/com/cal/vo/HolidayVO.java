@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class HolidayVO {
-	private String meaing;
+	private String meaning;
 	private String isHoliday;
 }

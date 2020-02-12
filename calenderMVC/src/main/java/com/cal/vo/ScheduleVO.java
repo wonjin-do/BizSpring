@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ScheduleVO {
 	private String userid;
-	private Date startdate;
-	private Date enddate;
+	private String startdate;
+	private String enddate;
 	private String title;
 	private String content;
 }

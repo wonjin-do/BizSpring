@@ -41,11 +41,12 @@
 						<input id="logout" type="button" value="로그아웃" style="flaot: right">
 				</c:otherwise>
 			</c:choose>
-		</form>
+			<input type="hidden" name="currMonth" value="${calendar.month }"/>
+		</form>		
 		<table>
 			<caption style="font-size: 70px;">
 				<input type="button" id="today" value="오늘"><a id="prev"
-					href="">&lt; </a>${cal.year } ${cal.month }<a id="next" href="">
+					href="">&lt; </a>${calendar.year } ${calendar.month }<a id="next" href="">
 					&gt;</a> 
 			</caption>
 			<thead>
@@ -61,10 +62,40 @@
 			</thead>
 			<!-- 달력출력  -->
 			<tbody>
-				
-				
-				
-				
+				<c:forEach var="week" items="${calendar.days2D }">
+					<tr>
+						<c:forEach var="day" varStatus="status" items="${week}">
+							<c:set var="holidayListPerOneDay" value="${holidayMap[day.date]}"/>
+							<c:set var="isContainHoliday" value="${holidayMap.containsKey(day.date) }"/><!--Holiday.txt 명단에 있는 날짜인지-->
+							<c:set var="isHoliday" value="false"/><!--휴일 인지 아닌지 -->
+							<c:if test="${isContainHoliday }">
+								<c:forEach var="holiday" items="${holidayListPerOneDay }">
+								   <c:if test="${not doneLoop}">
+						   				<c:if test="${holiday.isHoliday eq 'Y' }">
+											<c:set var="isHoliday" value="true"/>
+						   				</c:if>
+									</c:if> 
+								</c:forEach>
+							</c:if>
+
+							<td style="<c:if test="${day.month ne calendar.month  }">background-color: #DCDCDC; opacity: 0.5;</c:if>">
+								<div class="day <c:if test="${ isHoliday || status.index%7 == 0 || status.index%7 == 6 }">holiday</c:if>">
+									${day.day}
+								</div> 
+								<c:forEach var="holiday_part" items="${holidayListPerOneDay }">
+									<div>${holiday_part.meaning }</div>
+								</c:forEach>
+								<c:if test="${scheduleMap.containsKey(day.date) }">
+									<c:forEach var="schedule" items="${scheduleMap[day.date]}">
+										<div class="getSchedule" id="${day.date }">${schedule.title }</div>
+									</c:forEach>
+								</c:if>
+								
+								
+							</td>
+						</c:forEach>
+					</tr>					
+				</c:forEach>
 			</tbody>
 
 		</table>
@@ -112,7 +143,54 @@
 		<!-- /.modal-dialog -->
 	</div>
 	<!-- /.modal -->
-
+<!-- 
+<tbody>
+				<c:forEach var="week" items="${calendar.days2D }">
+					<tr>
+						<c:forEach var="day" varStatus="status" items="${week}">
+							<c:set var="holidayListPerOneDay" value="${holidayMap[day.date]}"/>
+							<c:choose>
+								<c:when test="${day.month ne calendar.month  }">
+									<td  style="background-color: #DCDCDC; opacity: 0.5;">
+										${day.day}
+									</td>
+								</c:when>
+								<c:when test="${status.index%7 == 0 || status.index%7 == 6 }">
+									<td class="holiday day">
+										<div>${day.day}</div>
+										<c:forEach var="holiday_part" items="${holidayListPerOneDay }">
+											<div>${holiday_part.meaning }</div>
+										</c:forEach>
+										
+									</td>
+								</c:when>
+								<c:when test="${holidayMap.containsKey(day.date)}">
+									<c:set var="doneLoop" value="false"/>
+									<c:forEach var="holiday_part" items="${holidayListPerOneDay }">
+									   <c:if test="${not doneLoop}">
+										<c:if test="${holiday_part.isHoliday eq 'Y' }">
+											<td class="holiday day">
+												<div>${day.day}</div> 
+												<c:forEach var="holiday_part" items="${holidayListPerOneDay }">
+													<div>${holiday_part.meaning }</div>
+												</c:forEach>
+											</td>
+											<c:set var="doneLoop" value="true"/>
+										</c:if>
+								 	   </c:if>
+									</c:forEach>
+								</c:when>
+								<c:otherwise>
+									<td class="day">
+										${day.day}
+									</td>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+					</tr>					
+				</c:forEach>
+			</tbody>
+ -->
 
 </body>
 <script type="text/javascript" src="/resources/js/reply.js"></script>
@@ -122,6 +200,15 @@
 	var month = date.getMonth();
 
 	var form = $("form");
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	$("#today").click(function(){
 		form.empty();
 		var input1 = document.createElement('input');
@@ -154,8 +241,8 @@
 	})
 	
 	$("#prev").click(function(e) {
-		var prevYear = parseInt(${cal.year},10);
-		var prevMonth = parseInt(${cal.month},10);
+		var prevYear = parseInt(${calendar.year},10);
+		var prevMonth = parseInt(${calendar.month},10);
 		if(prevMonth==1){
 			prevYear--;
 			prevMonth=12;
@@ -169,8 +256,8 @@
 	
 	$("#next").click(function(e) {
 		//e.preventDefault();
-		var nextYear = parseInt(${cal.year},10);
-		var nextMonth = parseInt(${cal.month},10);
+		var nextYear = parseInt(${calendar.year},10);
+		var nextMonth = parseInt(${calendar.month},10);
 		if(nextMonth==12){
 			nextYear++;
 			nextMonth=1;
@@ -202,17 +289,17 @@
     	  n = n + '';
     	  return n.length >= width ? n : new Array(width - n.length + 1).join('0') + n;
     	}
-    
+    var tag;
     $(".day").on("click", function(e){
-    	
+    	tag = this;
     	if(${empty customer}){
     		alert("로그인하세요");
     		$("input[name='id']").focus();
     		return;
     	}
     	
-    	var year = parseInt(${cal.year},10);
-		var month = parseInt(${cal.month},10);
+    	var year = parseInt(${calendar.year},10);
+		var month = parseInt(${calendar.month},10);
 		var day = parseInt(this.textContent,10);
 		month = pad(month, 2);
 		day = pad(day,2);
@@ -239,11 +326,11 @@
 			content: modalInputcontent.val()
           };
 	    replyService.add(schedule, function(result){
-        
-        alert(result);
-        if(result == "success"){
-        	
-        }
+        	console.log("새글이 등록됐습니다");
+        	var parentTag = tag.parentNode;
+        	var div = document.createElement('div');
+        	div.innerHTML = "<div>"+ result.title +"</div>";
+        	parentTag.append(div);
         
         modal.find("input").val("");
         modal.modal("hide");

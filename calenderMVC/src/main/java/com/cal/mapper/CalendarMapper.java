@@ -20,11 +20,13 @@ public interface CalendarMapper {
 	@Select("SELECT *FROM tbl_member WHERE id=#{id} AND password=#{password}")
 	public MemberVO getMember(MemberVO memberVO);
 	
-	@Insert("INSERT INTO tbl_schedule (userid, startdate, enddate, title, content) values (#{userid},#{startdate},#{enddate},#{title},#{content})")
-	public int addSchedule(ScheduleVO vo);
+	@Select("SELECT * FROM tbl_schedule WHERE userid=#{id} AND startdate between #{firstdate} AND #{lastdate}")
+	public List<ScheduleVO> getSchedule(@Param("firstdate")String firstdate, @Param("lastdate")String lastdate, @Param("id")String id);
 	
-	@Select("SELECT userid,startdate,enddate,title,content FROM tbl_schedule WHERE userid=#{id} AND startdate between #{s} AND #{e}")
-	public List<ScheduleVO> getAllSchedule(@Param("s")String strTot1, @Param("e")String strTot2, @Param("id")String id);
+	@Insert("INSERT INTO tbl_schedule (userid, startdate, enddate, title, content) values (#{userid},#{startdate},#{enddate},#{title},#{content})")
+	public int setSchedule(ScheduleVO vo);
+	
+
 	
 	
 	
