@@ -23,22 +23,7 @@ var replyService = (function() {
 		})
 	}
 
-//	function getList(param, callback, error) {
-//
-//		var bno = param.bno;
-//		var page = param.page || 1;
-//
-//		$.getJSON("/replies/pages/" + bno + "/" + page + ".json",
-//				function(data) {
-//					if (callback) {
-//						callback(data);
-//					}
-//				}).fail(function(xhr, status, err) {
-//			if (error) {
-//				error();
-//			}
-//		});
-//	}
+
 	
 	
 
@@ -62,10 +47,10 @@ var replyService = (function() {
 	  }
 
 	
-	function remove(rno, callback, error) {
+	function remove(idx, callback, error) {
 		$.ajax({
 			type : 'delete',
-			url : '/replies/' + rno,
+			url : '/schedule/delete/' + idx,
 			success : function(deleteResult, status, xhr) {
 				if (callback) {
 					callback(deleteResult);
@@ -79,14 +64,11 @@ var replyService = (function() {
 		});
 	}
 
-	function update(reply, callback, error) {
-
-		console.log("RNO: " + reply.rno);
-
+	function update(schedule, callback, error) {
 		$.ajax({
 			type : 'put',
-			url : '/replies/' + reply.rno,
-			data : JSON.stringify(reply),
+			url : '/schedule/modify.json',
+			data : JSON.stringify(schedule),
 			contentType : "application/json; charset=utf-8",
 			success : function(result, status, xhr) {
 				if (callback) {
@@ -102,7 +84,7 @@ var replyService = (function() {
 	}
 
 	function get(idx, callback, error) {
-
+		console.log("/schedule/" + idx + ".json");
 		$.get("/schedule/" + idx + ".json", function(result) {
 
 			if (callback) {
@@ -115,6 +97,20 @@ var replyService = (function() {
 			}
 		});
 	}
+	
+	function getByDate(date, callback, error) {
+		console.log("/schedule/date/" + date + ".json");
+		$.get("/schedule/date/" + date + ".json", function(result) {
+			if (callback) {
+				callback(result);
+			}
+		}).fail(function(xhr, status, err) {
+			if (error) {
+				error();
+			}
+		});
+	}
+	
 
 	function displayTime(timeValue) {
 
@@ -143,15 +139,32 @@ var replyService = (function() {
 					(dd > 9 ? '' : '0') + dd ].join('');
 		}
 	}
-	;
 
+//	function getList(param, callback, error) {
+	//
+//			var bno = param.bno;
+//			var page = param.page || 1;
+	//
+//			$.getJSON("/replies/pages/" + bno + "/" + page + ".json",
+//					function(data) {
+//						if (callback) {
+//							callback(data);
+//						}
+//					}).fail(function(xhr, status, err) {
+//				if (error) {
+//					error();
+//				}
+//			});
+//		}
+	
 	return {
 		add : add,
 		get : get,
 		getList : getList,
 		remove : remove,
 		update : update,
-		displayTime : displayTime
+		displayTime : displayTime,
+		getByDate : getByDate
 	};
 
 })();

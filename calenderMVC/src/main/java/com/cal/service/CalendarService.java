@@ -21,10 +21,16 @@ public interface CalendarService {
 	
 	public Map<String, List<ScheduleVO>> getScheduleMap(int year, int month, String id);
 	
-	public ScheduleVO getSchedule(int idx, String id);
+	public ScheduleVO getSchedule(int idx);
 
+	public int getScheduleByDate(String date, String id);
 	
-	public int setSchedule(ScheduleVO vo);
+	
+	public int addSchedule(ScheduleVO vo);
+	
+	public int modifySchedule(ScheduleVO vo);
+
+	public int deleteSchedule(int idx);
 	
 	public void register(MemberVO member);
 

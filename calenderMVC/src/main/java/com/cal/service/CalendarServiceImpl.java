@@ -45,7 +45,7 @@ public class CalendarServiceImpl implements CalendarService{
 			days1D.add(new DayInfo(calDTO.getPrevYear(), calDTO.getPrevMonth(), day));
 		}
 		for(int i = 0; i < calDTO.getLastDay(); i++) {
-			days1D.add(new DayInfo(year, month, i+1));
+			days1D.add(new DayInfo(calDTO.getYear(), calDTO.getMonth(), i+1));
 		}
 		for(int i = 0; i < 7; i++) {
 			days1D.add(new DayInfo(calDTO.getNextYear(), calDTO.getNextMonth(), i+1));
@@ -68,11 +68,30 @@ public class CalendarServiceImpl implements CalendarService{
 		return holidays;
 	}
 	@Override
-	public ScheduleVO getSchedule(int idx, String id) {
+	public ScheduleVO getSchedule(int idx) {
 		// TODO Auto-generated method stub
-		ScheduleVO schedule = calendarMapper.getSchedule(idx,id);
-		
-		return null;
+		ScheduleVO schedule = calendarMapper.getSchedule(idx);
+		System.out.println("Service: " + schedule);
+		return schedule;
+	}
+	
+	@Override
+	public int deleteSchedule(int idx) {
+		// TODO Auto-generated method stub
+		return calendarMapper.deleteSchedule(idx);
+	}
+
+	@Override
+	public int modifySchedule(ScheduleVO vo) {
+		// TODO Auto-generated method stub
+		return calendarMapper.updateSchedule(vo);
+	}
+
+	@Override
+	public int getScheduleByDate(String date, String id) {
+		// TODO Auto-generated method stub
+		List<ScheduleVO> ScheduleVOList = calendarMapper.getScheduleByDate(date, id);
+		return ScheduleVOList.get(0).getIdx();
 	}
 	
 	@Override
@@ -107,9 +126,9 @@ public class CalendarServiceImpl implements CalendarService{
 	}
 	
 	@Override
-	public int setSchedule(ScheduleVO vo) {
+	public int addSchedule(ScheduleVO vo) {
 		// TODO Auto-generated method stub
-		int cnt = calendarMapper.setSchedule(vo);
+		int cnt = calendarMapper.insertSchedule(vo);
 		return cnt;
 	}
 	
@@ -245,6 +264,7 @@ public class CalendarServiceImpl implements CalendarService{
 //		cldVO = new CalendarVO(year, month, endDay, dayOfWeek, numOfRows, days, meaning, scheduleList);
 		return cldVO;
 	}
+
 
 
 

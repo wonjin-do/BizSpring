@@ -14,8 +14,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -102,25 +105,81 @@ public class HomeController {
 		log.info("ScheduleVO: " + vo);
 		String id = (String)session.getAttribute("customer");
 		vo.setUserid(id);
-		int insertCount = calendarService.setSchedule(vo);
+		int insertCount = calendarService.addSchedule(vo);
 		
 		log.info("createSchedule Count: " + insertCount);
-		
+		System.out.println("추가된 schedule정보: " + vo);
 		return insertCount == 1  
 				? new ResponseEntity<>(vo, HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	@GetMapping(value="/schedule/{idx}")
-	public ResponseEntity<ScheduleVO> getSchedule(@RequestParam("idx") int idx, @RequestParam("id")String id, HttpServletRequest req ) {
+	public ResponseEntity<ScheduleVO> getSchedule(@PathVariable("idx") int idx, HttpServletRequest req ) {
+		System.out.println("요청옴");
 		HttpSession session = req.getSession();
 		String sessionId = (String)session.getAttribute("customer");
-		if(!sessionId.equals(id)) {
+		if(sessionId == null) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		ScheduleVO scheduleVO = calendarService.getSchedule(idx, id);
+		ScheduleVO scheduleVO = calendarService.getSchedule(idx);
+		System.out.println(scheduleVO);
 		return new ResponseEntity<ScheduleVO>(scheduleVO, HttpStatus.OK);
 	}
+	
+	@GetMapping(value="/schedule/date/{date}")
+	public ResponseEntity<Integer> getScheduleByDate(@PathVariable("date") String date, HttpServletRequest req ) {
+		System.out.println("요청옴");
+		HttpSession session = req.getSession();
+		String sessionId = (String)session.getAttribute("customer");
+		if(sessionId == null) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		int idx = calendarService.getScheduleByDate(date, sessionId);
+		return new ResponseEntity<>(idx, HttpStatus.OK);
+	}
+	
+	@PutMapping(value="/schedule/modify.json")
+	public ResponseEntity<ScheduleVO> modifySchedule(@RequestBody ScheduleVO vo, HttpServletRequest req ) {
+		System.out.println("수정요청 진입");
+		HttpSession session = req.getSession();
+		String sessionId = (String)session.getAttribute("customer");
+		vo.setUserid(sessionId);
+		if(sessionId == null) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return calendarService.modifySchedule(vo) == 1  
+				? new ResponseEntity<>(vo, HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@DeleteMapping(value="/schedule/delete/{idx}", produces = {MediaType.TEXT_PLAIN_VALUE})
+	public ResponseEntity<String> cancelSchedule( @PathVariable("idx") int idx, HttpServletRequest req){
+		System.out.println("삭제 요청");
+		HttpSession session = req.getSession();
+		String sessionId = (String)session.getAttribute("customer");
+		if(sessionId == null) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return calendarService.deleteSchedule(idx) == 1
+				? new ResponseEntity<String>("success", HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	//@GetMapping(value = "/")
 		public String home(CalendarVO cldVO, HttpServletRequest request, Model model) throws ParseException {
 			log.info("접속");

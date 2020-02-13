@@ -10,7 +10,8 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="/resources/css/cal.css">
 <!-- Bootstrap Core CSS -->
-    <link href="/resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="/resources/vendor/bootstrap/css/bootstrap.min.css"
+	rel="stylesheet">
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"
 	integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
@@ -41,13 +42,13 @@
 						<input id="logout" type="button" value="로그아웃" style="flaot: right">
 				</c:otherwise>
 			</c:choose>
-			<input type="hidden" name="currMonth" value="${calendar.month }"/>
-		</form>		
+			<input type="hidden" name="currMonth" value="${calendar.month }" />
+		</form>
 		<table>
 			<caption style="font-size: 70px;">
 				<input type="button" id="today" value="오늘"><a id="prev"
-					href="">&lt; </a>${calendar.year } ${calendar.month }<a id="next" href="">
-					&gt;</a> 
+					href="">&lt; </a>${calendar.year } ${calendar.month }<a id="next"
+					href=""> &gt;</a>
 			</caption>
 			<thead>
 				<tr>
@@ -65,37 +66,39 @@
 				<c:forEach var="week" items="${calendar.days2D }">
 					<tr>
 						<c:forEach var="day" varStatus="status" items="${week}">
-							<c:set var="holidayListPerOneDay" value="${holidayMap[day.date]}"/>
-							<c:set var="isContainHoliday" value="${holidayMap.containsKey(day.date) }"/><!--Holiday.txt 명단에 있는 날짜인지-->
-							<c:set var="isHoliday" value="false"/><!--휴일 인지 아닌지 -->
+							<c:set var="holidayListPerOneDay" value="${holidayMap[day.date]}" />
+							<c:set var="isContainHoliday"
+								value="${holidayMap.containsKey(day.date) }" />
+							<!--Holiday.txt 명단에 있는 날짜인지-->
+							<c:set var="isHoliday" value="false" />
+							<!--휴일 인지 아닌지 -->
 							<c:if test="${isContainHoliday }">
 								<c:forEach var="holiday" items="${holidayListPerOneDay }">
-								   <c:if test="${not doneLoop}">
-						   				<c:if test="${holiday.isHoliday eq 'Y' }">
-											<c:set var="isHoliday" value="true"/>
-						   				</c:if>
-									</c:if> 
+									<c:if test="${not doneLoop}">
+										<c:if test="${holiday.isHoliday eq 'Y' }">
+											<c:set var="isHoliday" value="true" />
+										</c:if>
+									</c:if>
 								</c:forEach>
 							</c:if>
-
-							<td style="<c:if test="${day.month ne calendar.month  }">background-color: #DCDCDC; opacity: 0.5;</c:if>">
-								<div class="day <c:if test="${ isHoliday || status.index%7 == 0 || status.index%7 == 6 }">holiday</c:if>">
-									${day.day}
-								</div> 
-								<c:forEach var="holiday_part" items="${holidayListPerOneDay }">
+							<td
+								style="<c:if test="${day.month ne calendar.month  }">background-color: #DCDCDC; opacity: 0.5;</c:if>">
+								<div
+									class="day <c:if test="${ isHoliday || status.index%7 == 0 || status.index%7 == 6 }">holiday</c:if>">
+									${day.day}</div> <c:forEach var="holiday_part"
+									items="${holidayListPerOneDay }">
 									<div>${holiday_part.meaning }</div>
 								</c:forEach>
+								<div class="scheduleList"> 
 								<c:if test="${scheduleMap.containsKey(day.date) }">
-									<c:forEach var="schedule" items="${scheduleMap[day.date]}">
-										<div class="schedule" data-idx="${schedule.idx }">${schedule.title }</div>
-									</c:forEach>
+											<c:forEach var="schedule" items="${scheduleMap[day.date]}">
+												<div class="schedule" data-idx="${schedule.idx }">${schedule.title }</div>
+											</c:forEach>
 								</c:if>
-							
-							
-								
+								</div>
 							</td>
 						</c:forEach>
-					</tr>					
+					</tr>
 				</c:forEach>
 			</tbody>
 
@@ -125,10 +128,15 @@
 					</div>
 					<div class="form-group">
 						<label>종료일</label> <input class="form-control" name='endDate'
-							 value='' type="date">
+							value='' type="date">
 					</div>
 					<div class="form-group">
-						<label>설명</label> <textarea rows="3" cols="70" name='content'></textarea>
+						<label>설명</label>
+						<textarea rows="3" cols="70" name='content'></textarea>
+					</div>
+					<div class="form-group">
+						<label></label>
+						<input class="form-control" type="text" name='idx' value=''>		
 					</div>
 
 				</div>
@@ -144,7 +152,7 @@
 		<!-- /.modal-dialog -->
 	</div>
 	<!-- /.modal -->
-<!-- 
+	<!-- 
 <tbody>
 				<c:forEach var="week" items="${calendar.days2D }">
 					<tr>
@@ -195,11 +203,12 @@
 
 </body>
 <script type="text/javascript" src="/resources/js/reply.js"></script>
-<script>
+<script type="text/javascript" src="/resources/js/cal.js"></script>
+<script type="text/javascript">
 	var date = new Date();
 	var year = date.getFullYear();
 	var month = date.getMonth();
-
+	
 	var form = $("form");
 	
 	$("#today").click(function(){
@@ -224,16 +233,19 @@
 	
 	
 	$("#login").click(function() {
+		console.log("Login click");
 		form.attr("action", "/login");
 		form.submit();
 	})
 	
 	$("#logout").click(function() {
+		
 		form.attr("action", "/logout").attr("method","get");
 		form.submit();
 	})
 	
 	$("#prev").click(function(e) {
+		console.log("prev click");
 		var prevYear = parseInt(${calendar.year},10);
 		var prevMonth = parseInt(${calendar.month},10);
 		if(prevMonth==1){
@@ -248,7 +260,8 @@
 	})
 	
 	$("#next").click(function(e) {
-		//e.preventDefault();
+		console.log("next click");
+		// e.preventDefault();
 		var nextYear = parseInt(${calendar.year},10);
 		var nextMonth = parseInt(${calendar.month},10);
 		if(nextMonth==12){
@@ -261,37 +274,44 @@
 		$("#next").attr("href", "/?year="+nextYear+"&month="+nextMonth);
 		$('#next').get(0).click();	
 	})
-
-
+	
+	
 	var modal = $(".modal");
-    var modalInputtitle = modal.find("input[name='title']");
-    var modalInputstartDate = modal.find("input[name='startDate']");
-    var modalInputendDate = modal.find("input[name='endDate']");
-    var modalInputcontent = modal.find("textarea[name='content']");
-    
-    var modalModBtn = $("#modalModBtn");//변경
-    var modalRemoveBtn = $("#modalRemoveBtn");//삭제
-    var modalRegisterBtn = $("#modalRegisterBtn");//등록
-    
-    $("#modalCloseBtn").on("click", function(e){
-    	
-    	modal.modal('hide');
-    });
-    
-    function pad(n, width) {
-    	  n = n + '';
-    	  return n.length >= width ? n : new Array(width - n.length + 1).join('0') + n;
-    	}
-    var tag;
-    $(".day").on("click", function(e){
-    	tag = this;
-    	if(${empty customer}){
-    		alert("로그인하세요");
-    		$("input[name='id']").focus();
-    		return;
-    	}
-    	
-    	var year = parseInt(${calendar.year},10);
+	var modalInputtitle = modal.find("input[name='title']");
+	var modalInputstartDate = modal.find("input[name='startDate']");
+	var modalInputendDate = modal.find("input[name='endDate']");
+	var modalInputcontent = modal.find("textarea[name='content']");
+	var modalInputidx = modal.find('input[name="idx"]');
+	
+	var modalModBtn = $("#modalModBtn");// 변경
+	var modalRemoveBtn = $("#modalRemoveBtn");// 삭제
+	var modalRegisterBtn = $("#modalRegisterBtn");// 등록
+	
+	$("#modalCloseBtn").on("click", function(e){
+		
+		modal.modal('hide');
+	});
+	
+	function pad(n, width) {
+		  n = n + '';
+		  return n.length >= width ? n : new Array(width - n.length + 1).join('0') + n;
+	}
+	
+	var currSchedule;
+	
+	var tag;
+	
+	//일정등록 모달창 띄우기
+	$(".day").on("click", function(e){
+		tag = $(this);
+		console.log("등록하려고 누른 태그 : ", tag);
+		if(${empty customer}){
+			alert("로그인하세요");
+			$("input[name='id']").focus();
+			return;
+		}
+		
+		var year = parseInt(${calendar.year},10);
 		var month = parseInt(${calendar.month},10);
 		var day = parseInt(this.textContent,10);
 		month = pad(month, 2);
@@ -299,103 +319,115 @@
 		var date = year + '-'+month + '-'+ day;
 		modalInputstartDate.val(date);
 		modalInputendDate.val(date);
-	    //modalInputReplyDate.closest("div").hide();
+				
 	    modal.find("button[id !='modalRegisterBtn']").hide();
-	      modalRegisterBtn.show();
-	      $(".modal").modal("show");   	
-    });
-    
-    $(".schedule").on("click",function(e){
-    	var idx = this.attr("schedule");
-    	replyService.get(idx, function(scheduleVO){
-			    		
-    		modalInputtitle.val(scheduleVO.title);
-    		modalInputstartDate.val(scheduleVO.startdate);
-    		modalInputendDate.val(scheduleVO.enddate);
-    		modal.find("input").attr("readonly","readonly");
-  	      modalRegisterBtn.hide();
-
-  	      $(".modal").modal("show");   	
-    });
-    
-    
-
-    modalRegisterBtn.on("click",function(e){
-      console.log(modalInputstartDate.val());
-      var schedule = {
-    		title: modalInputtitle.val(),
-   			startdate: modalInputstartDate.val(),
+	    modalRegisterBtn.show();
+	    $(".modal").modal("show");   	
+	})
+			
+	//일정 등록
+	modalRegisterBtn.on("click",function(e){
+		var schedule = {
+			title: modalInputtitle.val(),
+			startdate: modalInputstartDate.val(),
 			enddate: modalInputendDate.val(),
 			content: modalInputcontent.val()
-          };
-	    replyService.add(schedule, function(result){
-        	console.log("새글이 등록됐습니다");
-        	var parentTag = tag.parentNode;
-        	var div = document.createElement('div');
-        	div.innerHTML = "<div>"+ result.title +"</div>";
-        	parentTag.append(div);
-        
-        modal.find("input").val("");
-        modal.modal("hide");
-        
-      });
-      
-    });
-
-
-  //댓글 조회 클릭 이벤트 처리 
-    $(".chat").on("click", "li", function(e){
-      
-      var rno = $(this).data("rno");
-      
-      replyService.get(rno, function(reply){
-      
-        modalInputReply.val(reply.reply);
-        modalInputReplyer.val(reply.replyer);
-        modalInputReplyDate.val(replyService.displayTime( reply.replyDate))
-        .attr("readonly","readonly");
-        modal.data("rno", reply.rno);
-        
-        modal.find("button[id !='modalCloseBtn']").hide();
-        modalModBtn.show();
-        modalRemoveBtn.show();
-        
-        $(".modal").modal("show");
-            
-      });
-    });
-  
+		};
+		replyService.add(schedule, function(result){
+			
+			var scheduleList = tag.next();
+			
+			var div = document.createElement('div');
+			console.log("tag",tag);
+			console.log("scheduleList",scheduleList);
+			replyService.getByDate(modalInputstartDate.val(), function(idx){
+				div.innerHTML = result.title;
+				div.setAttribute("class", "schedule");
+				div.setAttribute("data-idx", idx);
+				scheduleList.append(div);
+				modal.find(":input").val("");
+				modal.modal("hide");
+			});
+		});
+    })
     
-    modalModBtn.on("click", function(e){
-    	  
-   	  var reply = {rno:modal.data("rno"), reply: modalInputReply.val()};
-   	  
-   	  replyService.update(reply, function(result){
-   	        
-   	    alert(result);
-   	    modal.modal("hide");
-   	    showList(pageNum);
-   	    
-   	  });
-   	  
-   	});
+    //변경
+     modalModBtn.on("click", function(e){
+		var schedule = {
+				title: modalInputtitle.val(),
+				startdate: modalInputstartDate.val(),
+				enddate: modalInputendDate.val(),
+				content: modalInputcontent.val(),
+				idx: modalInputidx.val()
+		};
+	  	  replyService.update(schedule, function(result){
+		  	  currSchedule.innerHTML = result.title;
+			  modal.find("input").val("");
+		  	  modal.modal("hide");
+		  });
+	  
+	})
+	
+	//제거
+	modalRemoveBtn.on("click", function (e){
+	  replyService.remove(modalInputidx.val(), function(result){
+	      alert(result);
+	  	  currSchedule.innerHTML = "";
 
-
-   	modalRemoveBtn.on("click", function (e){
-   	  
-   	  var rno = modal.data("rno");
-   	  
-   	  replyService.remove(rno, function(result){
-   	        
-   	      alert(result);
-   	      modal.modal("hide");
-   	      showList(pageNum);
-   	      
-   	  });
-   	  
-   	});
-
- 
+	      
+     	  modal.find("input").val("");
+	      modal.modal("hide");
+	  });
+	  
+	})
+	
+    
+    
+	
+	//일정 조회
+	 $(".scheduleList").on("click",".schedule" ,function(e){
+		 	currSchedule = this;
+		 	console.log(this);
+			var idx = $(this).data("idx");
+			replyService.get(idx, function(scheduleVO){
+	    		console.log(scheduleVO);
+	    		modalInputtitle.val(scheduleVO.title);
+	    		modalInputstartDate.val(scheduleVO.startdate);
+	    		modalInputendDate.val(scheduleVO.enddate);
+	    		modalInputcontent.val(scheduleVO.content);
+	    		modalInputidx.val(scheduleVO.idx);
+	    		console.dir("modalInputidx: " + modalInputidx +", scheduleVO.idx: " + scheduleVO.idx);
+	    	/*
+			 * modal.find(':input').each(function(){
+			 * $(this).attr("readonly",true); })
+			 */
+			 
+			    modal.find("button[id !='modalRegisterBtn']").show();
+	    		modalRegisterBtn.hide();
+	      		$(".modal").modal("show");   	
+		});
+	});
+		
+   
+ // 댓글 조회 클릭 이벤트 처리
+	/*
+	 * $(".chat").on("click", "li", function(e){
+	 * 
+	 * var rno = $(this).data("rno");
+	 * 
+	 * replyService.get(rno, function(reply){
+	 * 
+	 * modalInputReply.val(reply.reply); modalInputReplyer.val(reply.replyer);
+	 * modalInputReplyDate.val(replyService.displayTime( reply.replyDate))
+	 * .attr("readonly","readonly"); modal.data("rno", reply.rno);
+	 * 
+	 * modal.find("button[id !='modalCloseBtn']").hide(); modalModBtn.show();
+	 * modalRemoveBtn.show();
+	 * 
+	 * $(".modal").modal("show");
+	 * 
+	 * }); })
+	 */
 </script>
-</html>
 
+</html>
