@@ -1,0 +1,45 @@
+String은 내부적으로 char[]을 사용하는데 이 배열은 변경이 불가능하다.
+String의 new 연산이 O(n)번 실행된다.
+
+StringBuffer의 경우 String과 마찬가지로 내부적으로 char[]을 사용하지만 이 값은 변경이 가능하다.
+StringBuffer를 사용하도록 바꾸면 new 연산자는 한번만 실행된다.
+StringBuffer는 동기화를 지원하기 때문에 multi-thread에서도 사용 가능하다는 점이다.
+
+StringBuilder는 동기화를 지원하지 않아 single thread에서만 사용 가능
+
+<dependency>
+<groupId>net.sf.opencsv</groupId>
+<artifactId>opencsv</artifactId>
+<version>2.3</version>
+</dependency>
+
+
+
+클래스 종류			연산횟수	소요시간
+String			10000	0.041485
+StringBuffer	10000	3.931E-4
+StringBuilder	10000	1.886E-4
+
+String			20000	0.124186
+StringBuffer	20000	6.21E-4
+StringBuilder	20000	3.656E-4
+
+String			40000	0.4309068
+StringBuffer	40000	0.001143
+StringBuilder	40000	7.48E-4
+
+String			80000	1.1586242
+StringBuffer	80000	0.0019471
+StringBuilder	80000	8.073E-4
+
+String			160000	4.5415226
+StringBuffer	160000	0.001448
+StringBuilder	160000	0.0010108
+
+String			320000	19.2830811
+StringBuffer	320000	0.0016736
+StringBuilder	320000	0.001506
+
+String			640000	78.0562982
+StringBuffer	640000	0.0032089
+StringBuilder	640000	0.0029626
