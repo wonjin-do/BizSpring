@@ -15,6 +15,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cal.etc.HolidayTextRead;
 import com.cal.mapper.CalendarMapper;
 import com.cal.vo.CalDTO;
 import com.cal.vo.DayInfo;
@@ -29,49 +30,31 @@ import lombok.extern.java.Log;
 public class CalendarServiceImpl implements CalendarService{
 	@Autowired
 	CalendarMapper calendarMapper;
+	private static final String filePath = "C:\\Users\\Bizspring\\Desktop\\holiday.txt";
 
 	@Override
-	public CalDTO  showCalendar( int year, int month, String id){
+	public CalDTO  getCalendar( int year, int month, String id){
 		// TODO Auto-generated method stub
 		
-		//calDTO 만들
 		CalDTO calDTO = new CalDTO(year, month);
 		List<DayInfo> days1D = calDTO.getDays1D();
 		List<List<DayInfo>> days2D = calDTO.getDays2D();
 		
-		//1D
-		for(int i=calDTO.getDayOfweek() - 1; i >= 1; i--) {
-			int day = calDTO.getPrevEndDay() - i + 1;
-			days1D.add(new DayInfo(calDTO.getPrevYear(), calDTO.getPrevMonth(), day));
-		}
-		for(int i = 0; i < calDTO.getLastDay(); i++) {
-			days1D.add(new DayInfo(calDTO.getYear(), calDTO.getMonth(), i+1));
-		}
-		for(int i = 0; i < 7; i++) {
-			days1D.add(new DayInfo(calDTO.getNextYear(), calDTO.getNextMonth(), i+1));
-		}
-		//2D
-		for(int i = 0; i < calDTO.getNumOfweeks(); i++) {
-			days2D.add(days1D.subList(i * CalDTO.PREIOD_int, (i+1) * CalDTO.PREIOD_int));
-		}
-		
+		addDays_1D_Calendar(calDTO, days1D);
+		addDays_2D_Calendar(calDTO, days1D, days2D);
 		return calDTO;
 	}
-	
+
 	@Override
-	public Map<String, List<HolidayVO>> getHoliday(int year, int month){
-		//holiday 만듬
-		Map<String, List<HolidayVO>> holidays = getHolidaysMap();
-		
-		//연 , 월을 이용한 필터링
-		
-		return holidays;
+	public Map<String, List<HolidayVO>> getHoliday(CalDTO calendar){
+		HolidayTextRead htr = new HolidayTextRead();
+		htr.readTextFile(filePath);	//파일 읽기는 Calendar의 주요기능이 아님. 별도의 클래스에서 다루자.
+		return htr.makeHolidayMap(calendar);
 	}
 	@Override
 	public ScheduleVO getSchedule(int idx) {
 		// TODO Auto-generated method stub
 		ScheduleVO schedule = calendarMapper.getSchedule(idx);
-		System.out.println("Service: " + schedule);
 		return schedule;
 	}
 	
@@ -88,42 +71,19 @@ public class CalendarServiceImpl implements CalendarService{
 	}
 
 	@Override
-	public int getScheduleByDate(String date, String id) {
+	public int getOneDayScheduleByDate(String date, String id) {
 		// TODO Auto-generated method stub
 		List<ScheduleVO> ScheduleVOList = calendarMapper.getScheduleByDate(date, id);
 		return ScheduleVOList.get(0).getIdx();
 	}
 	
 	@Override
-	public Map<String, List<ScheduleVO>> getScheduleMap(int year, int month, String id) {
+	public Map<String, List<ScheduleVO>> getScheduleMap(CalDTO calendar, String id) {
 		// TODO Auto-generated method stub
-		Calendar cal = Calendar.getInstance();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		int lastDay = cal.getActualMaximum(Calendar.DATE);
-
-		cal.set(year, month-1, 1);
-		String firstdate = sdf.format(cal.getTime());
-		cal.set(year, month-1, lastDay);
-		String lastDate = sdf.format(cal.getTime());
-		System.out.println(firstdate + " " + lastDate);
-		List<ScheduleVO> scheduleList = calendarMapper.getScheduleList(firstdate, lastDate, id);
-		System.out.println("스케줄 갯수: " + scheduleList.size());
-		Map<String, List<ScheduleVO>> scheduleMap = new HashMap<String, List<ScheduleVO>>();
-		
-		List<ScheduleVO> value;
-		for(ScheduleVO schedule : scheduleList) {
-			String key = schedule.getStartdate();
-			if(!scheduleMap.containsKey(key)) {
-				value = new ArrayList<ScheduleVO>();
-				value.add(schedule);
-				scheduleMap.put(key, value);
-			}else {
-				value = scheduleMap.get(key);
-				value.add(schedule);
-			}
-		}
-		return scheduleMap;
+		List<ScheduleVO> scheduleList = getAllScheduleInMonth(calendar, id);
+		return makeScheduleMapInMonth(scheduleList);
 	}
+
 	
 	@Override
 	public int addSchedule(ScheduleVO vo) {
@@ -141,56 +101,74 @@ public class CalendarServiceImpl implements CalendarService{
 	@Override
 	public boolean login(MemberVO member) {
 		// TODO Auto-generated method stub
-		
 		MemberVO res = calendarMapper.getMember(member);
 		if(res != null)
 			return true;
 		return false;
 	}
 
-	
-	//공휴일 파일읽어오기
-	public Map<String, List<HolidayVO>> getHolidaysMap() {
-		Map<String, List<HolidayVO>> holidayMap = new HashMap<>();
-		List <HolidayVO> value;
-		try{
-            //파일 객체 생성
-            File file = new File("C:\\Users\\Bizspring\\Desktop\\holiday.txt");
-            //입력 스트림 생성
-            FileReader filereader = new FileReader(file);
-            //입력 버퍼 생성
-            BufferedReader bufReader = new BufferedReader(filereader);
-            String line = "";
-            while((line = bufReader.readLine()) != null){
-            	//라인단위로 읽는 함수는 \n 을 읽어오진 않음
-            	String [] rowParts = line.split("\t"); // "2020-01-26"  "설연휴"   "Y"
-    			HolidayVO holidayVO = new HolidayVO(rowParts[1], rowParts[2]);
-    			String key = rowParts[0];
-    			if(!holidayMap.containsKey(rowParts[0])) {
-    				value = new ArrayList<HolidayVO>();
-    				value.add(holidayVO);
-    				holidayMap.put(key, value);
-    			}else {
-    				value = holidayMap.get(key);
-    				value.add(holidayVO);
-    			}
-            }
-            filereader.close();
-            bufReader.close();
-        }catch (FileNotFoundException e) {
-            // TODO: handle exception
-        }catch(IOException e){
-            System.out.println(e);
-        }
-		
-		return holidayMap;
+	private void addDays_2D_Calendar(CalDTO calDTO, List<DayInfo> days1D, List<List<DayInfo>> days2D) {
+		//2D
+		for(int i = 0; i < calDTO.getNumOfweeks(); i++) {
+			days2D.add(days1D.subList(i * CalDTO.PREIOD_int, (i+1) * CalDTO.PREIOD_int));
+		}
 	}
 
+	private void addDays_1D_Calendar(CalDTO calDTO, List<DayInfo> days1D) {
+		//1D
+		for(int i=calDTO.getDayOfweek() - 1; i >= 1; i--) {
+			int day = calDTO.getPrevEndDay() - i + 1;
+			days1D.add(new DayInfo(calDTO.getPrevYear(), calDTO.getPrevMonth(), day));
+		}
+		for(int i = 0; i < calDTO.getLastDay(); i++) {
+			days1D.add(new DayInfo(calDTO.getYear(), calDTO.getMonth(), i+1));
+		}
+		for(int i = 0; i < 7; i++) {
+			days1D.add(new DayInfo(calDTO.getNextYear(), calDTO.getNextMonth(), i+1));
+		}
+	}
+	
+	private List<ScheduleVO> getAllScheduleInMonth(CalDTO calendar, String id) {
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		int lastDay = cal.getActualMaximum(Calendar.DATE);
+		cal.set(calendar.getYear(), calendar.getMonth()-1, 1);
+		String firstdate = sdf.format(cal.getTime());
+		cal.set(calendar.getYear(), calendar.getMonth()-1, lastDay);
+		String lastDate = sdf.format(cal.getTime());
+		List<ScheduleVO> scheduleList = calendarMapper.getScheduleList(firstdate, lastDate, id);
+		return scheduleList;
+	}
+	
+	private Map<String, List<ScheduleVO>> makeScheduleMapInMonth(List<ScheduleVO> scheduleList) {
+		Map<String, List<ScheduleVO>> scheduleMap = new HashMap<String, List<ScheduleVO>>();
+		List<ScheduleVO> value;
+		for(ScheduleVO schedule : scheduleList) {
+			String key = schedule.getStartdate();
+			if(!scheduleMap.containsKey(key)) {
+				value = new ArrayList<ScheduleVO>();
+				value.add(schedule);
+				scheduleMap.put(key, value);
+			}else {
+				value = scheduleMap.get(key);
+				value.add(schedule);
+			}
+		}
+		return scheduleMap;
+	}
 
+	
+	
+	
+	
+	
+	
+	
+	
 
 	//죽은 코드
-	@Override
-	public CalendarVO getHome(CalendarVO cldVO, String id)  {
+//	@Override
+//	public CalendarVO getHome(CalendarVO cldVO, String id)  {
 //		// TODO Auto-generated method stub
 //		int year ;
 //		int month;
@@ -262,8 +240,8 @@ public class CalendarServiceImpl implements CalendarService{
 //		}
 //		
 //		cldVO = new CalendarVO(year, month, endDay, dayOfWeek, numOfRows, days, meaning, scheduleList);
-		return cldVO;
-	}
+//		return cldVO;
+//	}
 
 
 

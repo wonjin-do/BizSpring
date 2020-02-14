@@ -48,33 +48,25 @@ public class HomeController {
 		
 		HttpSession session = request.getSession();
 		String id = (String)session.getAttribute("customer");
-		
-		CalDTO calendar = calendarService.showCalendar(year, month, id);
-		model.addAttribute("calendar", calendar);
-		
-		//휴일
-		Map<String, List<HolidayVO>> holidayMap = calendarService.getHoliday(calendar.getYear(), calendar.getMonth());
-		model.addAttribute("holidayMap",holidayMap);
+		CalDTO calendar = calendarService.getCalendar(year, month, id);
 
+		Map<String, List<HolidayVO>> holidayMap = calendarService.getHoliday(calendar);
+		Map<String, List<ScheduleVO>> scheduleMap = calendarService.getScheduleMap(calendar, id);
+		model.addAttribute("calendar", calendar);
+		model.addAttribute("holidayMap",holidayMap);
 		//if(id == null) return "calendar";
-		
-		//일정
-		Map<String, List<ScheduleVO>> scheduleMap = calendarService.getScheduleMap(calendar.getYear(), calendar.getMonth(), id);
 		model.addAttribute("scheduleMap",scheduleMap);
-		
 		return "calendar";
 	}
 	
 	@GetMapping(value = "/join")
-	public String joinPage() {
-		return "join";
+	public void join() {
+		
 	}
 	
 	@PostMapping(value = "/join")
 	public String join(MemberVO member) {
-		
 		calendarService.register(member);
-		
 		return "redirect:/";
 	}
 	
@@ -87,9 +79,7 @@ public class HomeController {
 			rttr.addFlashAttribute("month" ,month);
 			return "redirect:/";
 		}
-		
 		return "redirect:login";
-		
 	}
 	
 	@GetMapping(value="logout")
@@ -102,13 +92,9 @@ public class HomeController {
 	@PostMapping(value="/schedule/new", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<ScheduleVO> addSchedule(@RequestBody ScheduleVO vo, HttpServletRequest req ) {
 		HttpSession session = req.getSession();
-		log.info("ScheduleVO: " + vo);
 		String id = (String)session.getAttribute("customer");
 		vo.setUserid(id);
 		int insertCount = calendarService.addSchedule(vo);
-		
-		log.info("createSchedule Count: " + insertCount);
-		System.out.println("추가된 schedule정보: " + vo);
 		return insertCount == 1  
 				? new ResponseEntity<>(vo, HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -116,32 +102,28 @@ public class HomeController {
 	
 	@GetMapping(value="/schedule/{idx}")
 	public ResponseEntity<ScheduleVO> getSchedule(@PathVariable("idx") int idx, HttpServletRequest req ) {
-		System.out.println("요청옴");
 		HttpSession session = req.getSession();
 		String sessionId = (String)session.getAttribute("customer");
 		if(sessionId == null) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		ScheduleVO scheduleVO = calendarService.getSchedule(idx);
-		System.out.println(scheduleVO);
 		return new ResponseEntity<ScheduleVO>(scheduleVO, HttpStatus.OK);
 	}
 	
 	@GetMapping(value="/schedule/date/{date}")
 	public ResponseEntity<Integer> getScheduleByDate(@PathVariable("date") String date, HttpServletRequest req ) {
-		System.out.println("요청옴");
 		HttpSession session = req.getSession();
 		String sessionId = (String)session.getAttribute("customer");
 		if(sessionId == null) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		int idx = calendarService.getScheduleByDate(date, sessionId);
+		int idx = calendarService.getOneDayScheduleByDate(date, sessionId);
 		return new ResponseEntity<>(idx, HttpStatus.OK);
 	}
 	
 	@PutMapping(value="/schedule/modify.json")
 	public ResponseEntity<ScheduleVO> modifySchedule(@RequestBody ScheduleVO vo, HttpServletRequest req ) {
-		System.out.println("수정요청 진입");
 		HttpSession session = req.getSession();
 		String sessionId = (String)session.getAttribute("customer");
 		vo.setUserid(sessionId);
@@ -155,7 +137,6 @@ public class HomeController {
 	
 	@DeleteMapping(value="/schedule/delete/{idx}", produces = {MediaType.TEXT_PLAIN_VALUE})
 	public ResponseEntity<String> cancelSchedule( @PathVariable("idx") int idx, HttpServletRequest req){
-		System.out.println("삭제 요청");
 		HttpSession session = req.getSession();
 		String sessionId = (String)session.getAttribute("customer");
 		if(sessionId == null) {
@@ -173,28 +154,19 @@ public class HomeController {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	//@GetMapping(value = "/")
-		public String home(CalendarVO cldVO, HttpServletRequest request, Model model) throws ParseException {
-			log.info("접속");
-			
-			HttpSession session = request.getSession();
-			String id = (String)session.getAttribute("customer");
-			CalendarVO res = calendarService.getHome(cldVO, id);
-			model.addAttribute("cldVO", res);
-			return "home";
-			
-			
-			//Formatter fmt = new Formatter(Locale.US);
-			//fmt.format("      %tB %tY", cal, cal); // January 2020 출력 
-			//System.out.println(fmt);
-		}
+		//@GetMapping(value = "/")
+//		public String home(CalendarVO cldVO, HttpServletRequest request, Model model) throws ParseException {
+//			log.info("접속");
+//			
+//			HttpSession session = request.getSession();
+//			String id = (String)session.getAttribute("customer");
+//			CalendarVO res = calendarService.getHome(cldVO, id);
+//			model.addAttribute("cldVO", res);
+//			return "home";
+//			//Formatter fmt = new Formatter(Locale.US);
+//			//fmt.format("      %tB %tY", cal, cal); // January 2020 출력 
+//			//System.out.println(fmt);
+//		}
 		
 }
 

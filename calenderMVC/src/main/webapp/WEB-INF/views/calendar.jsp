@@ -66,16 +66,16 @@
 				<c:forEach var="week" items="${calendar.days2D }">
 					<tr>
 						<c:forEach var="day" varStatus="status" items="${week}">
-							<c:set var="holidayListPerOneDay" value="${holidayMap[day.date]}" />
+							<c:set var="holidayListPerOneDay" value="${holidayMap[day.oneDaydate]}" />
 							<c:set var="isContainHoliday"
-								value="${holidayMap.containsKey(day.date) }" />
+								value="${holidayMap.containsKey(day.oneDaydate) }" />
 							<!--Holiday.txt 명단에 있는 날짜인지-->
 							<c:set var="isHoliday" value="false" />
 							<!--휴일 인지 아닌지 -->
 							<c:if test="${isContainHoliday }">
-								<c:forEach var="holiday" items="${holidayListPerOneDay }">
+								<c:forEach var="holiday_part" items="${holidayListPerOneDay }">
 									<c:if test="${not doneLoop}">
-										<c:if test="${holiday.isHoliday eq 'Y' }">
+										<c:if test="${holiday_part.isHoliday eq 'Y' }">
 											<c:set var="isHoliday" value="true" />
 										</c:if>
 									</c:if>
@@ -83,18 +83,20 @@
 							</c:if>
 							<td
 								style="<c:if test="${day.month ne calendar.month  }">background-color: #DCDCDC; opacity: 0.5;</c:if>">
-								<div
-									class="day <c:if test="${ isHoliday || status.index%7 == 0 || status.index%7 == 6 }">holiday</c:if>">
-									${day.day}</div> <c:forEach var="holiday_part"
-									items="${holidayListPerOneDay }">
-									<div>${holiday_part.meaning }</div>
+								<div class="day <c:if test="${ isHoliday || status.index%7 == 0 || status.index%7 == 6 }">holiday</c:if>">
+									${day.day}
+								</div>
+								<c:forEach var="holiday_part" items="${holidayListPerOneDay }">
+									<div style="<c:if test="${holiday_part.isHoliday eq 'Y' }">color: red;</c:if>">
+										${holiday_part.meaning }
+									</div>
 								</c:forEach>
 								<div class="scheduleList"> 
-								<c:if test="${scheduleMap.containsKey(day.date) }">
-											<c:forEach var="schedule" items="${scheduleMap[day.date]}">
+									<c:if test="${scheduleMap.containsKey(day.oneDaydate) }">
+											<c:forEach var="schedule" items="${scheduleMap[day.oneDaydate]}">
 												<div class="schedule" data-idx="${schedule.idx }">${schedule.title }</div>
 											</c:forEach>
-								</c:if>
+									</c:if>
 								</div>
 							</td>
 						</c:forEach>
@@ -152,12 +154,12 @@
 		<!-- /.modal-dialog -->
 	</div>
 	<!-- /.modal -->
-	<!-- 
+<!-- 
 <tbody>
 				<c:forEach var="week" items="${calendar.days2D }">
 					<tr>
 						<c:forEach var="day" varStatus="status" items="${week}">
-							<c:set var="holidayListPerOneDay" value="${holidayMap[day.date]}"/>
+							<c:set var="holidayListPerOneDay" value="${holidayMap[day.oneDaydate]}"/>
 							<c:choose>
 								<c:when test="${day.month ne calendar.month  }">
 									<td  style="background-color: #DCDCDC; opacity: 0.5;">
@@ -173,7 +175,7 @@
 										
 									</td>
 								</c:when>
-								<c:when test="${holidayMap.containsKey(day.date)}">
+								<c:when test="${holidayMap.containsKey(day.oneDaydate)}">
 									<c:set var="doneLoop" value="false"/>
 									<c:forEach var="holiday_part" items="${holidayListPerOneDay }">
 									   <c:if test="${not doneLoop}">
@@ -222,7 +224,7 @@
 		
 		input2.setAttribute("type","hidden");
 		input2.setAttribute("name","month");
-		input2.setAttribute("value", month);
+		input2.setAttribute("value", month+1);
 		
 		form.append(input1);		
 		form.append(input2);
@@ -233,7 +235,6 @@
 	
 	
 	$("#login").click(function() {
-		console.log("Login click");
 		form.attr("action", "/login");
 		form.submit();
 	})
@@ -245,7 +246,6 @@
 	})
 	
 	$("#prev").click(function(e) {
-		console.log("prev click");
 		var prevYear = parseInt(${calendar.year},10);
 		var prevMonth = parseInt(${calendar.month},10);
 		if(prevMonth==1){
@@ -260,7 +260,6 @@
 	})
 	
 	$("#next").click(function(e) {
-		console.log("next click");
 		// e.preventDefault();
 		var nextYear = parseInt(${calendar.year},10);
 		var nextMonth = parseInt(${calendar.month},10);
@@ -270,7 +269,6 @@
 		}else{
 			nextMonth++;
 		}
-		console.log("test");
 		$("#next").attr("href", "/?year="+nextYear+"&month="+nextMonth);
 		$('#next').get(0).click();	
 	})
@@ -304,7 +302,6 @@
 	//일정등록 모달창 띄우기
 	$(".day").on("click", function(e){
 		tag = $(this);
-		console.log("등록하려고 누른 태그 : ", tag);
 		if(${empty customer}){
 			alert("로그인하세요");
 			$("input[name='id']").focus();
@@ -338,8 +335,6 @@
 			var scheduleList = tag.next();
 			
 			var div = document.createElement('div');
-			console.log("tag",tag);
-			console.log("scheduleList",scheduleList);
 			replyService.getByDate(modalInputstartDate.val(), function(idx){
 				div.innerHTML = result.title;
 				div.setAttribute("class", "schedule");
@@ -371,10 +366,7 @@
 	//제거
 	modalRemoveBtn.on("click", function (e){
 	  replyService.remove(modalInputidx.val(), function(result){
-	      alert(result);
 	  	  currSchedule.innerHTML = "";
-
-	      
      	  modal.find("input").val("");
 	      modal.modal("hide");
 	  });
@@ -387,21 +379,17 @@
 	//일정 조회
 	 $(".scheduleList").on("click",".schedule" ,function(e){
 		 	currSchedule = this;
-		 	console.log(this);
 			var idx = $(this).data("idx");
 			replyService.get(idx, function(scheduleVO){
-	    		console.log(scheduleVO);
 	    		modalInputtitle.val(scheduleVO.title);
 	    		modalInputstartDate.val(scheduleVO.startdate);
 	    		modalInputendDate.val(scheduleVO.enddate);
 	    		modalInputcontent.val(scheduleVO.content);
 	    		modalInputidx.val(scheduleVO.idx);
-	    		console.dir("modalInputidx: " + modalInputidx +", scheduleVO.idx: " + scheduleVO.idx);
 	    	/*
 			 * modal.find(':input').each(function(){
 			 * $(this).attr("readonly",true); })
 			 */
-			 
 			    modal.find("button[id !='modalRegisterBtn']").show();
 	    		modalRegisterBtn.hide();
 	      		$(".modal").modal("show");   	

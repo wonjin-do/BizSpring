@@ -23,7 +23,7 @@ public class DayInfo {
 	
 	private int dayOfWeek;
 	private DayOfWeek strDayofWeek;
-	private String date;
+	private String oneDaydate;
 
 	//holiday정보는 다른 DTO가 담당
 	//db에서 가져오기
@@ -40,7 +40,7 @@ public class DayInfo {
 		
 		dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		date = sdf.format(cal.getTime());
+		oneDaydate = sdf.format(cal.getTime());
 	}
 	
 	

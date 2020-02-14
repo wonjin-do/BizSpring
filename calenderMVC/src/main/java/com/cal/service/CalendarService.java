@@ -13,18 +13,19 @@ import com.cal.vo.ScheduleVO;
 import com.cal.vo.previousVersion.CalendarVO;
 
 public interface CalendarService {
-	public CalendarVO getHome(CalendarVO cldVO, String id);
+	//달력
+	public CalDTO  getCalendar( int year, int month, String id);
 	
-	public CalDTO  showCalendar( int year, int month, String id);
-
-	public Map<String, List<HolidayVO>> getHoliday(int year, int month);
+	//휴일
+	public Map<String, List<HolidayVO>> getHoliday(CalDTO calendar);
 	
-	public Map<String, List<ScheduleVO>> getScheduleMap(int year, int month, String id);
+	
+	//스케줄
+	public Map<String, List<ScheduleVO>> getScheduleMap(CalDTO calendar, String id);
 	
 	public ScheduleVO getSchedule(int idx);
 
-	public int getScheduleByDate(String date, String id);
-	
+	public int getOneDayScheduleByDate(String date, String id);
 	
 	public int addSchedule(ScheduleVO vo);
 	
@@ -32,6 +33,7 @@ public interface CalendarService {
 
 	public int deleteSchedule(int idx);
 	
+	//로그인
 	public void register(MemberVO member);
 
 	public boolean login(MemberVO member);
