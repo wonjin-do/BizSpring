@@ -17,6 +17,9 @@ public class CalDTO {
 	public final static int TOTAL_CELL = 42 + 1;
 	public final static int PREIOD_int = 7;
 	public final static double PREIOD_double = 7.0;
+	public final static int DECEMBER = 12;
+	public final static int JANUARY = 1;
+
 	
 	//생성자함수로 입력받는 값
 	private int year;
@@ -47,45 +50,57 @@ public class CalDTO {
 	
 	public CalDTO(int year, int month) {
 		super();
-		LocalDate d = LocalDate.now();
-		if(year == 0) {
-			year = d.getYear();
-			if(month == 0) {
-				month = d.getMonthValue();
-			}
-		}
-		else {
-			if(month == 0) {
-				year--;
-				month = 12;
-			}else if(month == 13) {
-				year++;
-				month = 1;
-			}
-		}
-		this.year = year;
-		this.month = month;
-		
 		days1D = new ArrayList<DayInfo>(TOTAL_CELL);
 		days2D = new ArrayList<List<DayInfo>>();
-		
+		refineYearAndMomth(year, month); // 0 년, 13월 , 0월 처리
+		Calendar cal = setThisMonthFeild(year, month);
+		setPrevYearNmonth(year, month, cal);
+	}
+
+
+
+	private Calendar setThisMonthFeild(int year, int month) {
 		Calendar cal = Calendar.getInstance();
 		cal.set(year, month-1, 1);
 		dayOfweek 	= cal.get(Calendar.DAY_OF_WEEK);		//첫날의 요일
 		lastDay	    = cal.getActualMaximum(Calendar.DATE);  //해당 월의 마지막 일(date)를 반환
-		
 		numOfweeks =(int)Math.ceil((dayOfweek + lastDay - 1)/PREIOD_double);
-		
 		today = LocalDate.now().toString();
-		
-		prevYear = (month == 1) ? year - 1 : year;
-		prevMonth = (month == 1) ? 12 : month -1;
+		return cal;
+	}
+
+
+
+	private void setPrevYearNmonth(int year, int month, Calendar cal) {
+		prevYear = (month == JANUARY) ? year - 1 : year;
+		prevMonth = (month == JANUARY) ? DECEMBER : month -1;
 		cal.set(year, prevMonth - 1, 1); 				  //동시 세팅 연,월,일 / month는 0이 1월이므로 -1을 해준다
 		prevEndDay = cal.getActualMaximum(Calendar.DATE); // 해당 월 마지막 날짜 28, 30, 31
-		
-		nextYear = (month == 12) ? year + 1 : year;
-		nextMonth = (month == 12) ? 1 : month + 1;
-		
+		nextYear = (month == DECEMBER) ? year + 1 : year;
+		nextMonth = (month == DECEMBER) ? JANUARY : month + 1;
+	}
+
+
+
+	private void refineYearAndMomth(int year, int month) {
+		LocalDate d = LocalDate.now();
+		this.year = year;
+		this.month = month;
+		if(this.year == 0) {
+			this.year = d.getYear();
+			if(this.month == 0) {
+				this.month = d.getMonthValue();
+			}
+		}
+		else {
+			if(this.month == 0) {
+				this.year--;
+				this.month = DECEMBER;
+			}else if(month == DECEMBER + 1) {
+				this.year++;
+				this.month = JANUARY;
+			}
+		}
 	}
 	
 	

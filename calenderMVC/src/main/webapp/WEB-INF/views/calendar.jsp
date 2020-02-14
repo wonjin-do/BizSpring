@@ -24,8 +24,6 @@
 
 </head>
 <body style="width:; padding: 0 300px;">
-	<c:set var="cal" value="${cldVO}" />
-	<c:set var="size" value="${fn:length(cal.days)}" />
 	<c:set var="width_tot" value="200" />
 	<c:set var="width" value="${width_tot/7 }" />
 	<div style="width: ${width_tot}; padding: 0 50px;">
@@ -35,14 +33,15 @@
 					<input name="id" type="text" placeholder="아이디">
 					<input name="password" type="text" placeholder="비밀번호">
 					<input id="login" type="submit" value="로그인" style="flaot: right">
-					<a href="/join">회원가입</a>
+					<a href="/join?year=${calendar.year }&month=${calendar.month }">회원가입</a>
 				</c:when>
 				<c:otherwise>
 						${customer }님 환영합니다.
 						<input id="logout" type="button" value="로그아웃" style="flaot: right">
 				</c:otherwise>
 			</c:choose>
-			<input type="hidden" name="currMonth" value="${calendar.month }" />
+			<input name="year" type=hidden value="${calendar.year }">
+			<input name="month" type="hidden" value="${calendar.month }">
 		</form>
 		<table>
 			<caption style="font-size: 70px;">
@@ -102,9 +101,74 @@
 						</c:forEach>
 					</tr>
 				</c:forEach>
+					
+								
+				
 			</tbody>
 
 		</table>
+		<div style="height: 60px;">2D List </div>
+			
+		<table>
+			<thead>
+				<tr>
+					<th>일</th>
+					<th>월</th>
+					<th>화</th>
+					<th>수</th>
+					<th>목</th>
+					<th>금</th>
+					<th>토</th>
+				</tr>
+			</thead>
+			<tbody>
+				<!-- sublist 이용 -->
+				<c:forEach var="i" begin="1" end="${calendar.numOfweeks }">
+					<tr>
+						<c:forEach var="day" varStatus="status" items="${calendar.days1D.subList(7 * (i-1), 7 * i)}">
+							<c:set var="holidayListPerOneDay" value="${holidayMap[day.oneDaydate]}" />
+							<c:set var="isContainHoliday"
+								value="${holidayMap.containsKey(day.oneDaydate) }" />
+							<!--Holiday.txt 명단에 있는 날짜인지-->
+							<c:set var="isHoliday" value="false" />
+							<!--휴일 인지 아닌지 -->
+							<c:if test="${isContainHoliday }">
+								<c:forEach var="holiday_part" items="${holidayListPerOneDay }">
+									<c:if test="${not doneLoop}">
+										<c:if test="${holiday_part.isHoliday eq 'Y' }">
+											<c:set var="isHoliday" value="true" />
+										</c:if>
+									</c:if>
+								</c:forEach>
+							</c:if>
+							<td
+								style="<c:if test="${day.month ne calendar.month  }">background-color: #DCDCDC; opacity: 0.5;</c:if>">
+								<div class="day <c:if test="${ isHoliday || status.index%7 == 0 || status.index%7 == 6 }">holiday</c:if>">
+									${day.day}
+								</div>
+								<c:forEach var="holiday_part" items="${holidayListPerOneDay }">
+									<div style="<c:if test="${holiday_part.isHoliday eq 'Y' }">color: red;</c:if>">
+										${holiday_part.meaning }
+									</div>
+								</c:forEach>
+								<div class="scheduleList"> 
+									<c:if test="${scheduleMap.containsKey(day.oneDaydate) }">
+											<c:forEach var="schedule" items="${scheduleMap[day.oneDaydate]}">
+												<div class="schedule" data-idx="${schedule.idx }">${schedule.title }</div>
+											</c:forEach>
+									</c:if>
+								</div>
+							</td>
+						</c:forEach>
+					
+					</tr>
+				</c:forEach>
+			</tbody>
+		
+		</table>
+		<div style="height: 60px;">1D List (List 인터페이스 subList 메소드 이용 )</div>
+
+
 
 	</div>
 
@@ -138,7 +202,7 @@
 					</div>
 					<div class="form-group">
 						<label></label>
-						<input class="form-control" type="text" name='idx' value=''>		
+						<input class="form-control" type="hidden" name='idx' value=''>		
 					</div>
 
 				</div>
@@ -208,8 +272,13 @@
 <script type="text/javascript" src="/resources/js/cal.js"></script>
 <script type="text/javascript">
 	var date = new Date();
-	var year = date.getFullYear();
-	var month = date.getMonth();
+	var todayYear = date.getFullYear();
+	var todayMonth = date.getMonth();
+	
+	
+	//화면상 보고있는 연도 , 달
+	var curYear = parseInt(${calendar.year},10);
+	var curMonth = parseInt(${calendar.month},10);
 	
 	var form = $("form");
 	
@@ -220,15 +289,14 @@
 		
 		input1.setAttribute("type","hidden");
 		input1.setAttribute("name","year");
-		input1.setAttribute("value", year);
+		input1.setAttribute("value", todayYear);
 		
 		input2.setAttribute("type","hidden");
 		input2.setAttribute("name","month");
-		input2.setAttribute("value", month+1);
+		input2.setAttribute("value", todayMonth + 1);
 		
 		form.append(input1);		
 		form.append(input2);
-		
 		form.attr("action","/").attr("method","get").submit();
 	})
 	
@@ -246,13 +314,13 @@
 	})
 	
 	$("#prev").click(function(e) {
-		var prevYear = parseInt(${calendar.year},10);
-		var prevMonth = parseInt(${calendar.month},10);
-		if(prevMonth==1){
-			prevYear--;
+		var prevYear, prevMonth;
+		if(curMonth==1){
+			prevYear = (curYear - 1);
 			prevMonth=12;
 		}else{
-			prevMonth--;
+			prevYear = curYear;
+			prevMonth = (curMonth - 1);
 		}
 		
 		$("#prev").attr("href", "/?year="+prevYear+"&month="+prevMonth);

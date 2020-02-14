@@ -60,33 +60,37 @@ public class HomeController {
 	}
 	
 	@GetMapping(value = "/join")
-	public void join() {
-		
+	public void join(@RequestParam("year")int year, @RequestParam("month")int month, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		session.setAttribute("year", year);
+		session.setAttribute("month", month);
 	}
 	
 	@PostMapping(value = "/join")
-	public String join(MemberVO member) {
+	public String join(MemberVO member, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		int year = (Integer)session.getAttribute("year");
+		int month = (Integer)session.getAttribute("month");
 		calendarService.register(member);
-		return "redirect:/";
+		return "redirect:/?year=" + year + "&month=" + month;
 	}
 	
 	@PostMapping(value = "/login")
-	public String login(MemberVO member, @RequestParam("currMonth")String currMonth,  HttpServletRequest request ,RedirectAttributes rttr) {
+	public String login(MemberVO member, @RequestParam("year")int year, @RequestParam("month")int month,  HttpServletRequest request ,RedirectAttributes rttr) {
 		HttpSession session = request.getSession();
-		int month = Integer.parseInt(currMonth);
 		if(calendarService.login(member)) {
 			session.setAttribute("customer", member.getId());
-			rttr.addFlashAttribute("month" ,month);
-			return "redirect:/";
+			return "redirect:/?year=" + year + "&month=" + month;
 		}
 		return "redirect:login";
 	}
 	
-	@GetMapping(value="logout")
-	public String logout(HttpServletRequest req) {
+	@GetMapping(value="/logout")
+	public String logout(MemberVO member, @RequestParam("year")int year, @RequestParam("month")int month,  HttpServletRequest req ,RedirectAttributes rttr) {
 		HttpSession session = req.getSession();
+		System.out.println("year: " + year + "month: " + month);
 		session.invalidate();
-		return "redirect:/";
+		return "redirect:/?year=" + year + "&month=" + month;
 	}
 	
 	@PostMapping(value="/schedule/new", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

@@ -28,9 +28,10 @@ import lombok.extern.java.Log;
 @Service
 @Log
 public class CalendarServiceImpl implements CalendarService{
+	private static final String filePath = "C:\\Users\\Bizspring\\Desktop\\holiday.txt";
+	
 	@Autowired
 	CalendarMapper calendarMapper;
-	private static final String filePath = "C:\\Users\\Bizspring\\Desktop\\holiday.txt";
 
 	@Override
 	public CalDTO  getCalendar( int year, int month, String id){
