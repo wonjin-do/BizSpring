@@ -233,7 +233,7 @@ public class compareHashMap_ArrayList_Vector {
 		}
 		temp.toArray(values);
 		
-		System.out.println(testArray.length + "개의 인스턴스 생성 시간 " +
+		System.out.println(testArray.length + "개의 인스턴스 생성 시간 \t" +
 				second(start, end) + "초");
 		
 	}

@@ -1,0 +1,67 @@
+@charset "UTF-8";
+body{
+	padding: 0 50px;
+}
+h1{
+    color:red;
+}
+a{
+	text-decoration:none;
+}
+td:hover {
+	opacity: 1
+}
+
+
+ul{
+	padding: 10px;
+}
+td, th{
+		border: 1px solid black;
+		text-align: left;
+		vertical-align: top;
+}
+th{
+	height: 30px;
+	
+}
+
+.day{
+	font-weight: bold;
+	font-size: 20px;
+}
+
+
+.dayName{
+	
+	height:20px; 
+	display: inline-block;
+	border: 1px solid black;
+	float: left;
+	text-align: center;
+}
+
+.holiday{
+	color: red;
+}
+#head{
+	width:400px;
+	height:30px;
+	border: 1px solid black;
+	text-align: center;
+}
+
+input{
+	border: 0px;
+}
+.schedule  {
+	/* background-color: #FFE4C4 */
+}
+
+/* .schedule :nth-of-type(2n) {
+	background-color: #FFE4C4
+}
+
+.schedule :nth-of-type(2n-1) {
+	background-color: #7FFFD4
+} */
