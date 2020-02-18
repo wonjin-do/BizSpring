@@ -6,8 +6,7 @@
 <html>
 <head>
 	<title>Home</title>
-	<link rel="stylesheet" href="/resources/cal.css">
-	
+	<link rel="stylesheet" href="/controller/resources/cal.css">
 </head>
 <body>
 	학생별 
@@ -24,10 +23,11 @@
 				</tr>
 			</thead>
 			<!-- 달력출력  -->
+			
 			<tbody>
-				<c:forEach var="studentEntry" items="${resBySTU }">
+				<c:forEach var="studentEntry" varStatus="status" begin="0" items="${unsortedBySTU }">
 					<tr>
-						<td>${studentEntry.key }</td>
+						<td>${studentEntry.key } </td>
 						<c:forEach var="subjectEntry" varStatus="status" items="${studentEntry.value.scoreMap}">
 							<td>
 								${subjectEntry.value.score }	
@@ -37,7 +37,7 @@
 				</c:forEach>
 				<tr>
 					<td>계</td>
-					<c:forEach var="subjectEntry" items="${resBySub }">
+					<c:forEach var="subjectEntry" items="${unsortedBySub }">
 						<td>
 							${subjectEntry.value.total }						
 						</td>
@@ -45,7 +45,7 @@
 				</tr>
 				<tr>
 					<td>응시인원</td>
-					<c:forEach var="subjectEntry" items="${resBySub }">
+					<c:forEach var="subjectEntry" items="${unsortedBySub }">
 						<td>
 							${subjectEntry.value.numOfStu }						
 						</td>
@@ -53,7 +53,7 @@
 				</tr>
 				<tr>
 					<td>평균</td>
-					<c:forEach var="subjectEntry" items="${resBySub }">
+					<c:forEach var="subjectEntry" items="${unsortedBySub }">
 						<td>
 							${subjectEntry.value.avg }						
 						</td>
@@ -78,9 +78,14 @@
 			</thead>
 			<!-- 달력출력  -->
 			<tbody>
-				<c:forEach var="studentEntry" items="${sortedResBySTU }">
+				<c:forEach var="studentEntry" varStatus="status" items="${sortedResBySTU }">
 					<tr>
-						<td>${studentEntry.key }</td>
+						<td>${studentEntry.key }
+						 	<c:choose>
+						 		<c:when test="${status.index == 0 }">+</c:when>
+						 		<c:when test="${status.index == 9 }">-</c:when>
+						 	</c:choose>      
+						 </td>
 						<c:forEach var="subjectEntry" varStatus="status" items="${studentEntry.value.scoreMap}">
 							<td>
 								${subjectEntry.value.score }	
@@ -90,7 +95,7 @@
 				</c:forEach>
 				<tr>
 					<td>계</td>
-					<c:forEach var="subjectEntry" items="${resBySub }">
+					<c:forEach var="subjectEntry" items="${unsortedBySub }">
 						<td>
 							${subjectEntry.value.total }						
 						</td>
@@ -98,7 +103,7 @@
 				</tr>
 				<tr>
 					<td>응시인원</td>
-					<c:forEach var="subjectEntry" items="${resBySub }">
+					<c:forEach var="subjectEntry" items="${unsortedBySub }">
 						<td>
 							${subjectEntry.value.numOfStu }						
 						</td>
@@ -106,7 +111,7 @@
 				</tr>
 				<tr>
 					<td>평균</td>
-					<c:forEach var="subjectEntry" items="${resBySub }">
+					<c:forEach var="subjectEntry" items="${unsortedBySub }">
 						<td>
 							${subjectEntry.value.avg }						
 						</td>

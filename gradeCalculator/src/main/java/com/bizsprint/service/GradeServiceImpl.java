@@ -1,5 +1,10 @@
-package com.bizsprint.gradeProcess;
+package com.bizsprint.service;
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,11 +14,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Service;
+
 import com.bizsprint.vo.ScoreResultBySubjectVO;
 import com.bizsprint.vo.ScoreVO;
 import com.bizsprint.vo.StudentVO;
 import com.opencsv.CSVReader;
- 
+@Service 
 public class GradeServiceImpl implements GradeService {
 	public static final String filenames[] = {"korean", "english", "math"};
 	public static final String ext = "dat";
@@ -23,16 +30,16 @@ public class GradeServiceImpl implements GradeService {
 	public static List<List<String[]>> allSubjectInfo;
 	public static final Map<String, ScoreResultBySubjectVO> resultBySubject = new HashMap<>();
 	
-	@Override
+	@Override//학생별
 	public Map<String, StudentVO> makeScoreListBySTU(){
-		readFromFile();
-		return scoreBySTU(); //학생별
+		readFromFiles();
+		return scoreBySTU(); 
 	}
 
-	@Override
+	@Override//과목별-비정렬
 	public Map<String, ScoreResultBySubjectVO> makeResultBySubject() {
 		// TODO Auto-generated method stub
-		readFromFile();
+		readFromFiles();
 		Map<String, ScoreResultBySubjectVO> resultBySubject = new HashMap<String, ScoreResultBySubjectVO>();  
 		for(int i=0; i<filenames.length; i++) {
 			String subject = filenames[i];
@@ -42,10 +49,10 @@ public class GradeServiceImpl implements GradeService {
 		return resultBySubject;
 	}
 
-	@Override
+	@Override//과목별-정렬
 	public List<Map.Entry<String, StudentVO>> sortedScoreListBySTU(char option) {
 		// TODO Auto-generated method stub
-		readFromFile();
+		readFromFiles();
 		Map<String, StudentVO> unSorted = scoreBySTU();
         List<Map.Entry<String, StudentVO>> list = new LinkedList<>(unSorted.entrySet());
         Collections.sort(list, new Comparator<Map.Entry<String, StudentVO>>() {
@@ -97,12 +104,15 @@ public class GradeServiceImpl implements GradeService {
 		}
 	}
 	
-	public void readFromFile() {
-		String subfiledir;
+	public void readFromFiles() {
 		allSubjectInfo = new ArrayList<List<String[]>>();
 		for(String subject : filenames) {
-			subfiledir = filedir + subject + "." + ext;
-			allSubjectInfo.add(readFromOneFile(subfiledir)) ; 
+			StringBuffer subfiledir = new StringBuffer();
+			subfiledir.append(filedir);
+			subfiledir.append(subject );
+			subfiledir.append(".");
+			subfiledir.append(ext);
+			allSubjectInfo.add(readFromOneFile(subfiledir.toString())) ; 
 		}
 	}
 	
@@ -111,11 +121,34 @@ public class GradeServiceImpl implements GradeService {
 		List<String[]> strSoreList = new ArrayList<String[]>();
 		try(InputStreamReader is = new InputStreamReader(new FileInputStream(subfiledir), "utf-8");
 	            CSVReader reader = new CSVReader(is,'\t');){
-			strSoreList = reader.readAll();
+			//strSoreList = reader.readAll();
+			strSoreList = myReadAll(subfiledir);
 		}catch(Exception e){
             e.printStackTrace();
         }
 		return strSoreList;// 리턴타입  배열 [] 로 한 이유. 과목 수는 정해져 있기 때문
+	}
+	
+	public List<String[]> myReadAll(String subfiledir){
+		List<String[]> res = new ArrayList<String[]>();
+		try{
+			//파일 객체 생성
+	        File file = new File(subfiledir);
+	        FileReader filereader = new FileReader(file);//입력 스트림 생성
+	        BufferedReader bufReader = new BufferedReader(filereader);//입력 버퍼 생성			
+	        String row;
+	        String[] rowArray;
+	        while((row = bufReader.readLine()) != null){
+	        	rowArray = row.split("\t");//라인단위로 읽는 함수는 \n 을 읽어오진 않음
+	        	res.add(rowArray);
+	        }
+		 }catch (FileNotFoundException e) {
+	            // TODO: handle exception
+        }catch(IOException e){
+            System.out.println(e);
+        }
+		
+		return res;
 	}
 	
 	private void putScoreBySTU(Map<String, StudentVO> studentInfoMap, String subject, List<String[]> ScoresFromFile) {

@@ -25,8 +25,4 @@ public class StudentVO {
 		return "StudentVO [rankByAll=" + rankByAll + ", name=" + name + ", total=" + total + ", avg=" + Math.round(avg*100)/100.0
 				+ ", scoreMap=" + scoreMap + "]";
 	}
-
-
-	
-	
 }
