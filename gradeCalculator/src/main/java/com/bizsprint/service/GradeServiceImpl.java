@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -25,26 +26,28 @@ public class GradeServiceImpl implements GradeService {
 	public static final String filenames[] = {"korean", "english", "math"};
 	public static final String ext = "dat";
 	public static final String filedir = "C:\\Users\\Bizspring\\Desktop\\";
-	public static final double NUM_OF_SUBJECT = 3.0;
+	public static int NUM_OF_SUBJECT = 3;
 	public static int num_of_stu;
 	public static List<List<String[]>> allSubjectInfo;
 	public static final Map<String, ScoreResultBySubjectVO> resultBySubject = new HashMap<>();
 	
+	public static Map<String, String> maxMin = new HashMap<String, String>();
+	
 	@Override//학생별
 	public Map<String, StudentVO> makeScoreListBySTU(){
 		readFromFiles();
-		return scoreBySTU(); 
+		return scoreBySTU(); //가로로 vo
 	}
 
-	@Override//과목별-비정렬
-	public Map<String, ScoreResultBySubjectVO> makeResultBySubject() {
+	@Override//아래 통계
+	public Map<String, ScoreResultBySubjectVO> makeResultBySubject() {//세로로 vo
 		// TODO Auto-generated method stub
 		readFromFiles();
-		Map<String, ScoreResultBySubjectVO> resultBySubject = new HashMap<String, ScoreResultBySubjectVO>();  
+		Map<String, ScoreResultBySubjectVO> resultBySubject = new LinkedHashMap<String, ScoreResultBySubjectVO>();  
 		for(int i=0; i<filenames.length; i++) {
 			String subject = filenames[i];
 			putScoreBySubject(resultBySubject, subject, allSubjectInfo.get(i));
-		}
+		}// scoreList ,resultBySubject
 		setAvgEachSub(resultBySubject);
 		return resultBySubject;
 	}
@@ -58,7 +61,7 @@ public class GradeServiceImpl implements GradeService {
         Collections.sort(list, new Comparator<Map.Entry<String, StudentVO>>() {
             @Override
             public int compare(Map.Entry<String, StudentVO> o1, Map.Entry<String, StudentVO> o2) {
-            	int idx = 0;
+            	int idx = -1;
             	 if(option=='k') {
                  	idx =  0;
                  }else if(option=='e') {
@@ -71,11 +74,11 @@ public class GradeServiceImpl implements GradeService {
             	 return o2.getValue().getScoreMap().get(filenames[idx]).getScore() - o1.getValue().getScoreMap().get(filenames[idx]).getScore();
             }
         });
-        int rank = 1;
+        int rankByTotalScore = 1;
         for(Map.Entry<String, StudentVO> entry : list) {
-        	entry.getValue().setRankByAll(rank);
-        	rank++;
+        	entry.getValue().setRankByTotalScore(rankByTotalScore++);
         }
+        
 		return list;
 	}
 	
@@ -172,19 +175,19 @@ public class GradeServiceImpl implements GradeService {
 	
 	private void putScoreBySubject(Map<String, ScoreResultBySubjectVO> resultBySubject, String subject, List<String[]> ScoresFromFile) {
 		// TODO Auto-generated method stub
-		String key;			//학생 이름	
+		String key = subject;					//과목이름	
 		ScoreResultBySubjectVO value;	//점수 정보
 		for(String scoreInfo[] : ScoresFromFile) {
 			int score = Integer.parseInt(scoreInfo[1]);
-			if(resultBySubject.containsKey(subject)) {
+			if(resultBySubject.containsKey(key)) {
 				//이미 있는 과목정보
-				key 	= subject;
 				value	= resultBySubject.get(key);
 				value.setTotal(value.getTotal() + score);
 			}else {
 				value = new ScoreResultBySubjectVO();
 				value.setTotal(score);
-				resultBySubject.put(subject, value);
+				value.setSubjectName(key);
+				resultBySubject.put(key, value);
 			}
 			value.setNumOfStu(value.getNumOfStu() + 1); //과목별 응시 인원수 체크
 		}
@@ -197,11 +200,6 @@ public class GradeServiceImpl implements GradeService {
 		Map<String, StudentVO> map2 = csv.makeScoreListBySTU();
 		char option = 'k';//'e','m','t'
 		List<Map.Entry<String, StudentVO>> list = csv.sortedScoreListBySTU(option);
-		System.out.println("makeResultBySubject()");
-		for(Map.Entry<String, ScoreResultBySubjectVO> entry : map1.entrySet()) {
-			System.out.println(entry);
-		}
-		System.out.println();
 		
 		System.out.println("makeScoreListBySTU()");
 		for(Map.Entry<String, StudentVO> entry : map2.entrySet()) {
@@ -209,11 +207,25 @@ public class GradeServiceImpl implements GradeService {
 		}
 		System.out.println();
 
+		System.out.println("makeResultBySubject()");
+		for(Map.Entry<String, ScoreResultBySubjectVO> entry : map1.entrySet()) {
+			System.out.println(entry);
+		}
+		System.out.println();
+		
+		
 		System.out.printf("sortedScoreListBySTU( %c )\n",option);
 		for(Map.Entry<String, StudentVO> entry : list) {
 			System.out.println(entry);
 		}
 		System.out.println();
+		
+		System.out.println("makeResultBySubject()");
+		for(Map.Entry<String, ScoreResultBySubjectVO> entry : map1.entrySet()) {
+			System.out.println(entry);
+		}
+		System.out.println();
+		
 	}
 
 }

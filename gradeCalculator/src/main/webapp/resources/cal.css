@@ -18,50 +18,40 @@ ul{
 }
 td, th{
 		border: 1px solid black;
-		text-align: left;
+		text-align: right;
+		font-size: 20px;
 		vertical-align: top;
+		width: 100px;
+		height: 40px;
 }
 th{
 	height: 30px;
 	
 }
 
-.day{
+
+.score{
 	font-weight: bold;
-	font-size: 20px;
 }
 
-
-.dayName{
+.res{
+		background-color: #F8F8FF;
 	
-	height:20px; 
-	display: inline-block;
-	border: 1px solid black;
+	
+}
+
+.up{
+	background-color: #7FFF00;
+}
+.down{
+	background-color: yellow;
+}
+.num{
+	width: 80%;
 	float: left;
-	text-align: center;
 }
-
-.holiday{
-	color: red;
+.mark{
+	width: 20%;
+	float: right;
+	
 }
-#head{
-	width:400px;
-	height:30px;
-	border: 1px solid black;
-	text-align: center;
-}
-
-input{
-	border: 0px;
-}
-.schedule  {
-	/* background-color: #FFE4C4 */
-}
-
-/* .schedule :nth-of-type(2n) {
-	background-color: #FFE4C4
-}
-
-.schedule :nth-of-type(2n-1) {
-	background-color: #7FFFD4
-} */

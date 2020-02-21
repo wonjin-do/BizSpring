@@ -33,11 +33,16 @@ public class HomeController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(HttpServletRequest request ,Model model) {
 		System.out.println("접속");
-		Map<String, ScoreResultBySubjectVO> unsortedBySub = csv.makeResultBySubject();
-		Map<String, StudentVO> 				unsortedBySTU = csv.makeScoreListBySTU();
-		char option = 'm';//'e','m','t'
-		List<Map.Entry<String, StudentVO>> sortedResBySTU = csv.sortedScoreListBySTU(option);
 		
+		//StudentVO에 있는 List가 넣어진 순서대로 출력됨
+		Map<String, StudentVO> 				unsortedBySTU = csv.makeScoreListBySTU();
+		
+		//HashMap의 해쉬값에 따라 출력됨.(문제발생)
+		Map<String, ScoreResultBySubjectVO> unsortedBySub = csv.makeResultBySubject();
+		char option = 'm';//'e','m','t'
+
+		//List에 넣어진  순서대로 출력됨
+		List<Map.Entry<String, StudentVO>> sortedResBySTU = csv.sortedScoreListBySTU(option);
 		
 		model.addAttribute("unsortedBySub", unsortedBySub);
 		model.addAttribute("unsortedBySTU", unsortedBySTU);
