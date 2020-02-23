@@ -38,7 +38,10 @@ public class HomeController {
 //		Map<Integer, List<MenuVO>> menuMap =  menuService.getMenuVOList();
 //		model.addAttribute("menuMap",menuMap);
 		
-		 List<Node>  nonRecursiveList = menuService.getnodeList();
+		List<Node>  nonRecursiveList = menuService.getnodeList();
+		String res = menuService.getMenu();
+		
+		model.addAttribute("res", res);
 		model.addAttribute("nonRecursiveList", nonRecursiveList);
 		return "home";
 	}

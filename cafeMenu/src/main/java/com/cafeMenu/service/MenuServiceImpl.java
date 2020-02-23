@@ -16,7 +16,7 @@ import com.opencsv.CSVReader;
 
 @Service
 public class MenuServiceImpl implements MenuService {
-	public static final String filePath = "C:\\Users\\Bizspring\\Desktop\\menu.txt";
+	public static final String filePath = "C:\\Users\\eh\\Desktop\\menu.txt";
 
 	@Override
 	public List<Node> getnodeList() {
@@ -42,26 +42,32 @@ public class MenuServiceImpl implements MenuService {
 		StringBuffer res = new StringBuffer();
 		
 		for(int i=0;i<nonRecursiveList.size();i++) {
-			Node elem = nonRecursiveList.get(i);
-
-			if(elem.getChildrenNodes().size() > 0)
-				
-			res.append("<li>" + elem.getTitle());
-			
-			
+			Node curr = nonRecursiveList.get(i);
+			if(curr.getNodeNum() != 0)res.append("<li>" + curr.getTitle());
+			if(curr.getChildrenNodes().size() > 0)
+			{
+				res.append("<ul>");
+			}else {
+				if(i < nonRecursiveList.size() - 1) {
+					Node next = nonRecursiveList.get(i+1);
+					for(int j=0;j<curr.getDepth() - next.getDepth();j++) {
+						res.append("</li></ul>");
+					}
+				}else {
+					for(int j=0;j<curr.getDepth();j++) {
+						res.append("</li></ul>");
+					}
+				}
+			}
 		}
-		
-		
-		
-		
-		return null;
+		return res.toString();
 	}
 
 
 	public void recursive(List<Node> nonRecursiveList, Node curr, int depth) {
 		if(depth != 0) {
 			tab(depth);
-			System.out.print("<li>" + curr.getTitle());
+			//System.out.print("<li>" + curr.getTitle());
 		}
 		nonRecursiveList.add(curr);
 		curr.setDepth(depth-1);
@@ -111,7 +117,9 @@ public class MenuServiceImpl implements MenuService {
 	
 	public static void main(String[] args) {
 		MenuService menuService = new MenuServiceImpl();
-		List<Node> nodeList = menuService.getnodeList();
+		//List<Node> nodeList = menuService.getnodeList();
+		String res = menuService.getMenu();
+		System.out.println(res);
 		
 		
 	}
