@@ -4,6 +4,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 
 <html>
@@ -28,9 +29,14 @@
 		<caption style="font-size: 70px;"></caption>
 		<thead>
 			<tr>
-				<th>name</th>
+				<th style="background-color: #FFD700">
+					<div style="text-align:center;">이름</div>
+				</th>
 				<c:forEach var="sub" items="${titleKeys }">
-					<th>${translateMap[sub]}</th>
+					<th style="background-color: #FFD700">
+						<div class="score">${translateMap[sub]}</div>
+						<div class="mark"><c:if test="${sub eq option }">↓</c:if></div>
+					</th>
 				</c:forEach>
 			</tr>
 		</thead>
@@ -38,13 +44,25 @@
 			<!-- 학생 과목별 성적, 학생별 총계,학생별 평균 -->
 			<c:forEach var="entry" items="${scoreBoard}">
 				<tr>
-					<td>${entry.key }</td>
+					<td style="text-align:center; background-color: #FFD700">${entry.key }</td>
 					<c:set var="subMap" value="${entry.value }" />
 					<c:forEach var="title" items="${titleKeys}">
 						<c:set var="studentTitle" value="${entry.key }${title }" />
 						<c:set var="titleRank" value="${title }rank" />
-						<td class="score ${subMap[studentTitle]}">
-							<div class="num">${subMap[title]}</div>
+						<td class=" ${subMap[studentTitle]}">
+							<c:choose>
+								<c:when test="${title eq 'avg' }">
+									<div class="num"  style="text-align:right;">
+										<fmt:formatNumber value="${subMap[title]}" pattern=".00"/>
+									</div>		
+								</c:when>
+								<c:otherwise>
+									<div class="score num">
+										${subMap[title]}		
+									</div>	
+								</c:otherwise>
+							</c:choose>
+							
 							<div class="mark">${subMap[titleRank] }</div>
 						</td>
 					</c:forEach>
@@ -54,10 +72,10 @@
 			<!-- 맨 아래 두줄: 과목별 성적결과 -->
 			<c:forEach var="entry" items="${resultBoard }">
 				<tr>
-					<td class="res">${translateMap[entry.key] }</td>
+					<td class="res" style="text-align:center;">${translateMap[entry.key] }</td>
 					<c:set var="subMap" value="${entry.value }" />
 					<c:forEach var="title" items="${titleKeys }">
-						<td class="res"><div class="num">${subMap[title]}</div></td>
+						<td class="res"><div style="text-align:right;">${subMap[title]}</div></td>
 					</c:forEach>
 				</tr>
 			</c:forEach>

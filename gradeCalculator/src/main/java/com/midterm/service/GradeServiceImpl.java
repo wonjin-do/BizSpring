@@ -21,7 +21,7 @@ import lombok.extern.java.Log;
 @Service
 @Log
 public class GradeServiceImpl implements GradeService{
-	private static final String dirPath = "C:\\Users\\Bizspring\\Desktop\\score\\";
+	private static final String dirPath = "C:\\Users\\Bizspring\\Desktop\\data\\score\\";
 	private static final String TOTAL 	= "tot";
 	private static final String AVG 	= "avg";
 	
@@ -62,6 +62,9 @@ public class GradeServiceImpl implements GradeService{
 		//정보읽기
 		readFromFiles();
 		
+		//시험안본사람들 0점 처리하기
+		makeZeroScore();
+		
 		//subject 정렬하기
 		sortsubjectName();
 		entryList = new ArrayList<>(scoreBoard.entrySet()); 
@@ -87,11 +90,25 @@ public class GradeServiceImpl implements GradeService{
 
 		return entryList;
 	}
+	private void makeZeroScore() {
+		for(String stu : student_Keys) {
+			for(String sub : subject_Keys) {
+				if(scoreBoard.get(stu).get(sub) == null) {
+					scoreBoard.get(stu).put(sub, 0);
+				}
+			}
+		}
+	}
 
 	private void registerLanguage() {
+		translate.put("name","이름");
 		translate.put("korean","국어");
 		translate.put("english","영어");
 		translate.put("math","수학");
+		translate.put("society","사회");
+		translate.put("physics","물리");
+		translate.put("science","과학");
+		
 		
 		translate.put("tot","합계");
 		translate.put("avg","평균");
@@ -110,10 +127,10 @@ public class GradeServiceImpl implements GradeService{
 			@Override
 			public int compare(String o1, String o2) {
 				// TODO Auto-generated method stub
-				if(o2.equals("korean") || o1.equals("math")) {
+				if(o2.equals("korean") || o1.equals("math")) 
 					return 1;
-				}
 				return -1;
+				//return translate.get(o2).compareTo(translate.get(o1));
 			}
 		});
 	}
@@ -124,11 +141,13 @@ public class GradeServiceImpl implements GradeService{
 			
 			//개인별 과목
 			for(String title : subject_Keys) {
-				if((int)stuScores.get(title) > (double)resultBoard.get(AVG).get(title)) {
+				int left = (stuScores.get(title)!=null) ? (int)stuScores.get(title) : 0;
+				if(left > (double)resultBoard.get(AVG).get(title)) {
 					stuScores.put(stuName+title, "up");
 				}else
 					stuScores.put(stuName+title, "down");
 			}
+			
 			
 			//개인별 결과
 			if((int)stuScores.get(TOTAL) > (double)resultBoard.get(AVG).get(TOTAL))//합계 
@@ -149,7 +168,7 @@ public class GradeServiceImpl implements GradeService{
 			@Override
 			public int compare(Entry<String, Map<String, Object>> o1, Entry<String, Map<String, Object>> o2) {
 				// TODO Auto-generated method stub
-				System.out.println((int)o2.getValue().get(option) + " " + (int)o1.getValue().get(option));
+				
 				return (int)o2.getValue().get(option) - (int)o1.getValue().get(option);
 			}
 		});
@@ -173,18 +192,20 @@ public class GradeServiceImpl implements GradeService{
 				public int compare(Entry<String, Map<String, Object>> o1, Entry<String, Map<String, Object>> o2) {
 					// TODO Auto-generated method stub
 					//과목(sub)점수를 통해 비교
-					return (int)o2.getValue().get(title) - (int)o1.getValue().get(title);
+					int left = (o2.getValue().get(title) != null) ? (int)o2.getValue().get(title) : 0;
+					int right = (o1.getValue().get(title) != null) ? (int)o1.getValue().get(title) : 0;
+					return left - right;
 				}
 			});
 			int rank=1;
 			for(Map.Entry<String, Map<String, Object>> entry : entryList) {
 				String name = entry.getKey();
+				//scoreBoard.get(name).put(title+"rank", rank);
 				if(rank==1) {
 					scoreBoard.get(name).put(title+"rank", "+");
-				}else if(rank==10) {
+				}else if(rank==student_Keys.size()) {
 					scoreBoard.get(name).put(title+"rank", "-");
 				}
-				
 				rank++;
 			}
 		}
@@ -237,7 +258,8 @@ public class GradeServiceImpl implements GradeService{
 		for(String sub : subject_Keys) {
 			int tot=0;double avg=0;
 			for(Map<String, Object> elem : scoreBoard.values()) {
-				tot += (int)elem.get(sub);
+				if(elem.get(sub) != null)
+					tot += (int)elem.get(sub);
 			}
 			avg = tot/(double)student_Keys.size();
 			avg = Math.round(avg*100)/100.0;
@@ -251,7 +273,8 @@ public class GradeServiceImpl implements GradeService{
 		for(Map<String, Object> elem : scoreBoard.values()) {
 			int tot=0;double avg=0;
 			for(String sub : subject_Keys) {
-				tot += (int)elem.get(sub);
+				if(elem.get(sub) != null)
+					tot += (int)elem.get(sub);
 			}
 			avg = tot/(double)subject_Keys.size();
 			avg = Math.round(avg*100)/100.0;

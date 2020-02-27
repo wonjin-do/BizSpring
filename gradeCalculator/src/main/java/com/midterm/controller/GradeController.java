@@ -1,6 +1,9 @@
 package com.midterm.controller;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,8 +17,9 @@ public class GradeController {
 	GradeService gradeService;
 	
 	@GetMapping(value= {"/score"})
-	public String getScores(@RequestParam("option")String option ,Model model) {
-			
+	public String getScores(HttpServletRequest request,Model model) {
+		String option = request.getParameter("option"); 
+		if(option==null)option="tot";
 		List<Map.Entry<String, Map<String, Object>>> scoreBoard = gradeService.scoreBoard(option);
 		Map<String, Map<String, Object>> resultBoard = gradeService.resultBoard();
 		List<String> titleKeys = gradeService.getTitle_Keys();

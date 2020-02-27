@@ -31,8 +31,6 @@ th{
 
 
 .score{
-	float: left;
-	width: 70%;
 }
 
 .res{
@@ -49,8 +47,8 @@ th{
 	background-color: yellow;
 }
 .num{
-	
-	
+	width: 70%;
+	float: left;
 }
 .mark{
 	width: 20%;
